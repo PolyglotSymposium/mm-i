@@ -3,9 +3,6 @@ class Lexer:
         self.__current_delim = None # This is bad. The lexer itself should not be stateful.
 
     def tokenize(self, characters):
-        return [token for token in self.__split_into_tokens(characters)]
-
-    def __split_into_tokens(self, characters):
         current_word = ''
         for c in characters:
             current_word += c

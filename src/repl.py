@@ -4,7 +4,7 @@ class Evaluator:
     def __init__(self, lexer):
         self.__lexer = lexer
     def evaluate(self, line):
-        return int(self.__lexer.tokenize(line)[0].raw_value)
+        return int(next(self.__lexer.tokenize(line)).raw_value)
 
 class REPL:
     def __init__(self, read, print, evaluate):
