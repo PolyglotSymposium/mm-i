@@ -64,5 +64,9 @@ class LexerSpecs(unittest.TestCase):
         tokens = Lexer().tokenize('"quo\'te f\'oo  bar\'"')
         self.assertEqual(1, len(tokens))
 
+    def test_plus_sign_is_just_an_generic_identifier(self):
+        first_token = Lexer().tokenize('+')[0]
+        self.assertTrue(first_token.is_a(TokenType.identifier))
+
 if __name__ == '__main__':
     unittest.main()

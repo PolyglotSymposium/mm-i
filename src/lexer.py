@@ -36,12 +36,13 @@ class Lexer:
     def __lexing_string(self):
         return self.__current_delim
 
-
 def decorate_with_type(token, characters):
     if characters[0] in STRING_DELIMITERS:
         found_type = TokenType.string
-    else:
+    elif characters[0].isdigit():
         found_type = TokenType.integer
+    else:
+        found_type = TokenType.identifier
 
     token.is_a = lambda ttype: ttype == found_type
 
@@ -50,3 +51,4 @@ def decorate_with_type(token, characters):
 class TokenType:
     def integer(): pass
     def string(): pass
+    def identifier(): pass
