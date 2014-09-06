@@ -16,10 +16,17 @@ class Lexer:
                 self.__handle_string_delimiter(c)
             elif not self.__lexing_string() and c == ' ':
                 if current_word != ' ':
-                    yield Token(current_word[:-1], TokenType.integer) if current_word[:-1].isdigit() else current_word[:-1]
+                    yield Token(current_word[:-1], self.__get_type(current_word[:-1]))
                 current_word = ''
         if current_word != '':
-            yield Token(current_word, TokenType.integer) if current_word.isdigit() else current_word
+            yield Token(current_word, self.__get_type(current_word))
+
+    def __get_type(self, word):
+        if word[0] in STRING_DELIMITERS:
+            return TokenType.string
+        if word.isdigit():
+            return TokenType.integer
+        return TokenType.identifier
 
     def __handle_string_delimiter(self, delim):
         if self.__lexing_string() and self.__ends_string(delim):
@@ -49,14 +56,6 @@ class TokenType:
     def right_paren(): pass
     def right_square_bracket(): pass
     def left_square_bracket(): pass
-
-class TokenFactory:
-    def create(self, word):
-        return Token(word, self.__get_type(word))
-    def __get_type(self, word):
-        if word[0] in STRING_DELIMITERS:
-            return TokenType.string
-        return TokenType.identifier
 
 STRING_DELIMITERS = ['"', "'"]
 
