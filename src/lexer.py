@@ -3,7 +3,7 @@ class Lexer:
         self.__current_delim = None
 
     def tokenize(self, characters):
-        return [Token(word) for word in self.__split_words(characters)]
+        return [TokenFactory().create(word) for word in self.__split_words(characters)]
 
     def __split_words(self, characters):
         current_word = ''
@@ -34,14 +34,12 @@ class Lexer:
         return self.__current_delim
 
 class Token:
-    def __init__(self, word):
+    def __init__(self, word, ttype):
         self.raw_value = word
+        self.__ttype = ttype
 
     def is_a(self, ttype):
-        return ttype == TokenTypeFactory(self).create()
-
-class TokenFactory:
-    pass
+        return self.__ttype == ttype
 
 class TokenType:
     def integer(): pass
@@ -52,22 +50,19 @@ class TokenType:
     def right_square_bracket(): pass
     def left_square_bracket(): pass
 
-class TokenTypeFactory:
-    def __init__(self, token):
-        self.__text = token.raw_value
-
-    def create(self):
-        if self.__text[0] in STRING_DELIMITERS:
+class TokenFactory:
+    def create(self, word):
+        return Token(word, self.__get_type(word))
+    def __get_type(self, word):
+        if word[0] in STRING_DELIMITERS:
             return TokenType.string
-        elif self.__text[0] in CHAR_TO_TYPE:
-            return CHAR_TO_TYPE[self.__text[0]]
-        elif self.__all_chars_are_numeric():
+        if word[0] in CHAR_TO_TYPE:
+            return CHAR_TO_TYPE[word[0]]
+        if self.__all_chars_are_numeric(word):
             return TokenType.integer
-
         return TokenType.identifier
-
-    def __all_chars_are_numeric(self):
-        return len([i for i in self.__text if 48 <= ord(i) and 57 >= ord(i)]) == len(self.__text)
+    def __all_chars_are_numeric(self, word):
+        return len([i for i in word if 48 <= ord(i) and 57 >= ord(i)]) == len(word)
 
 STRING_DELIMITERS = ['"', "'"]
 
@@ -77,3 +72,4 @@ CHAR_TO_TYPE = {
     ']': TokenType.right_square_bracket,
     '[': TokenType.left_square_bracket,
 }
+
