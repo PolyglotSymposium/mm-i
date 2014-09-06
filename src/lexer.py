@@ -1,5 +1,3 @@
-STRING_DELIMITERS = ['"', "'"]
-
 class Lexer:
     def __init__(self):
         self.__current_delim = None
@@ -17,7 +15,7 @@ class Lexer:
         current_word = ''
         for c in characters:
             current_word += c
-            if current_word in TokenTypeFactory.CHAR_TO_TYPE:
+            if current_word in CHAR_TO_TYPE:
                 yield current_word
                 current_word = ''
             elif c in STRING_DELIMITERS:
@@ -49,19 +47,15 @@ class TokenType:
     def right_paren(): pass
 
 class TokenTypeFactory:
-    CHAR_TO_TYPE = {
-        '(': TokenType.left_paren,
-        ')': TokenType.right_paren
-    }
 
     def __init__(self, token):
         self.__text = token.raw_value
 
     def create(self):
-        if self.__text[0] in ['"', "'"]:
+        if self.__text[0] in STRING_DELIMITERS:
             return TokenType.string
-        elif self.__text[0] in TokenTypeFactory.CHAR_TO_TYPE:
-            return TokenTypeFactory.CHAR_TO_TYPE[self.__text[0]]
+        elif self.__text[0] in CHAR_TO_TYPE:
+            return CHAR_TO_TYPE[self.__text[0]]
         elif self.__all_chars_are_numeric():
             return TokenType.integer
 
@@ -69,3 +63,10 @@ class TokenTypeFactory:
 
     def __all_chars_are_numeric(self):
         return len([i for i in self.__text if 48 <= ord(i) and 57 >= ord(i)]) == len(self.__text)
+
+STRING_DELIMITERS = ['"', "'"]
+
+CHAR_TO_TYPE = {
+    '(': TokenType.left_paren,
+    ')': TokenType.right_paren
+}
