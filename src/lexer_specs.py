@@ -28,6 +28,10 @@ class LexerSpecs(unittest.TestCase):
         second_token = Lexer().tokenize('42 35')[1]
         self.assertTrue(second_token.is_a(TokenType.integer))
 
+    def test_when_lexing_two_integers_second_has_correct_raw_value(self):
+        second_token = Lexer().tokenize('42 35')[1]
+        self.assertEqual('35', second_token.raw_value)
+
     def test_when_lexing_a_single_quoted_thing_its_type_is_string(self):
         first_token = Lexer().tokenize("'single-quoted!!!'")[0]
         self.assertTrue(first_token.is_a(TokenType.string))
