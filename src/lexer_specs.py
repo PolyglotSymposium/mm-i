@@ -60,5 +60,9 @@ class LexerSpecs(unittest.TestCase):
         first_token = Lexer().tokenize('"string with spaces"')[0]
         self.assertEqual('"string with spaces"', first_token.raw_value)
 
+    def test_quotes_and_spaces_in_string_is_still_single_string(self):
+        tokens = Lexer().tokenize('"quo\'te f\'oo  bar\'"')
+        self.assertEqual(1, len(tokens))
+
 if __name__ == '__main__':
     unittest.main()

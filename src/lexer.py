@@ -11,16 +11,25 @@ class Lexer:
         return tokens
 
     def __split_words(self, characters):
-        current_delim = None
+        self.__current_delim = None
         current = ''
         for c in characters:
             current += c
             if c in STRING_DELIMITERS:
-                current_delim = None if current_delim else c
-            elif not current_delim and c == ' ':
+                if self.__in_string() and self.__ends_string(c):
+                    self.__current_delim = None
+                elif not self.__in_string():
+                    self.__current_delim = c
+            elif not self.__in_string() and c == ' ':
                 yield current
                 current = ''
         yield current
+
+    def __ends_string(self, char):
+        return self.__current_delim == char
+
+    def __in_string(self):
+        return self.__current_delim
 
 
 def decorate_with_type(token, characters):
