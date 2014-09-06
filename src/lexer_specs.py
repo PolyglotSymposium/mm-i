@@ -4,6 +4,10 @@ import unittest
 from lexer import Lexer, TokenType
 
 class LexerSpecs(unittest.TestCase):
+    def test_when_lexing_multiple_spaces_no_tokens_are_returned(self):
+        tokens = Lexer().tokenize('       ')
+        self.assertEqual([], tokens)
+
     def test_when_lexing_integer_type_is_integer(self):
         first_token = Lexer().tokenize('2814')[0]
         self.assertTrue(first_token.is_a(TokenType.integer))
