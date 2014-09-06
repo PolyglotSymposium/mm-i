@@ -1,3 +1,5 @@
+from itertools import count
+
 class Lexer:
     def __init__(self):
         self.__current_delim = None # This is bad. The lexer itself should not be stateful.
@@ -45,13 +47,9 @@ class Token:
     def is_a(self, token):
         return self.__ttype == token.__ttype
 
-def __make_token_types():
-    token_type = -1
-    while True:
-        token_type += 1
-        yield lambda word=None: Token(word, token_type)
-
-token_types = __make_token_types()
+token_types = (
+    (lambda ttype: lambda word=None: Token(word, ttype))(tt)
+    for tt in count())
 
 integer_token = next(token_types)
 string_token = next(token_types)

@@ -9,6 +9,9 @@ def nth(generator, n):
     return next(generator)
 
 class LexerSpecs(unittest.TestCase):
+    def test_token_types_are_unique(self):
+        self.assertFalse(integer_token().is_a(string_token()))
+
     def test_when_lexing_multiple_spaces_no_tokens_are_returned(self):
         tokens = Lexer().tokenize('       ')
         self.assertEqual([], list(tokens))
