@@ -8,8 +8,8 @@ class Lexer:
         tokens = []
         for word in self.__split_words(characters):
             token = lambda: None
-            token = decorate_with_type(token, word)
             token.raw_value = word
+            token = decorate_with_type(token)
             tokens.append(token)
         return tokens
 
@@ -38,12 +38,12 @@ class Lexer:
     def __lexing_string(self):
         return self.__current_delim
 
-def decorate_with_type(token, characters):
-    if characters[0] in STRING_DELIMITERS:
+def decorate_with_type(token):
+    if token.raw_value[0] in STRING_DELIMITERS:
         found_type = TokenType.string
-    elif characters[0] == '(':
+    elif token.raw_value[0] == '(':
         found_type = TokenType.left_paren
-    elif all_chars_are_numeric(characters):
+    elif all_chars_are_numeric(token.raw_value):
         found_type = TokenType.integer
     else:
         found_type = TokenType.identifier
