@@ -19,21 +19,21 @@ class Lexer:
             current_word += c
             if c in STRING_DELIMITERS:
                 self.__handle_string_delimiter(c)
-            elif not self.__in_string() and c == ' ':
+            elif not self.__lexing_string() and c == ' ':
                 yield current_word
                 current_word = ''
         yield current_word
 
     def __handle_string_delimiter(self, delim):
-        if self.__in_string() and self.__ends_string(delim):
+        if self.__lexing_string() and self.__ends_string(delim):
             self.__current_delim = None
-        elif not self.__in_string():
+        elif not self.__lexing_string():
             self.__current_delim = delim
 
     def __ends_string(self, char):
         return self.__current_delim == char
 
-    def __in_string(self):
+    def __lexing_string(self):
         return self.__current_delim
 
 
