@@ -9,7 +9,7 @@ class Lexer:
         for word in self.__split_words(characters):
             token = lambda: None
             token.raw_value = word
-            token = decorate_with_type(token)
+            token.is_a = lambda ttype: ttype == TokenTypeFactory(token).create()
             tokens.append(token)
         return tokens
 
@@ -38,28 +38,31 @@ class Lexer:
     def __lexing_string(self):
         return self.__current_delim
 
-def decorate_with_type(token):
-    if token.raw_value[0] in STRING_DELIMITERS:
-        found_type = TokenType.string
-    elif token.raw_value[0] == '(':
-        found_type = TokenType.left_paren
-    elif token.raw_value[0] == ')':
-        found_type = TokenType.right_paren
-    elif all_chars_are_numeric(token.raw_value):
-        found_type = TokenType.integer
-    else:
-        found_type = TokenType.identifier
-
-    token.is_a = lambda ttype: ttype == found_type
-
-    return token
-
-def all_chars_are_numeric(word):
-    return len([i for i in word if 48 <= ord(i) and 57 >= ord(i)]) == len(word)
-
 class TokenType:
     def integer(): pass
     def string(): pass
     def identifier(): pass
     def left_paren(): pass
     def right_paren(): pass
+
+class TokenTypeFactory:
+    CHAR_TO_TYPE = {
+        '"': TokenType.string,
+        "'": TokenType.string,
+        '(': TokenType.left_paren,
+        ')': TokenType.right_paren
+    }
+
+    def __init__(self, token):
+        self.__text = token.raw_value
+
+    def create(self):
+        if self.__text[0] in TokenTypeFactory.CHAR_TO_TYPE:
+            return TokenTypeFactory.CHAR_TO_TYPE[self.__text[0]]
+        elif self.__all_chars_are_numeric():
+            return TokenType.integer
+
+        return TokenType.identifier
+
+    def __all_chars_are_numeric(self):
+        return len([i for i in self.__text if 48 <= ord(i) and 57 >= ord(i)]) == len(self.__text)
