@@ -49,7 +49,6 @@ class TokenType:
     def left_square_bracket(): pass
 
 class TokenTypeFactory:
-
     def __init__(self, token):
         self.__text = token.raw_value
 
