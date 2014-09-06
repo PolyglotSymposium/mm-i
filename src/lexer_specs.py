@@ -40,5 +40,9 @@ class LexerSpecs(unittest.TestCase):
         first_token = Lexer().tokenize('"double-quoted=more-work"')[0]
         self.assertTrue(first_token.is_a(TokenType.string))
 
+    def test_when_lexing_double_quoted_string_with_spaces_in_it_one_token_is_returned(self):
+        tokens = Lexer().tokenize('"string with spaces"')
+        self.assertEqual(1, len(tokens))
+
 if __name__ == '__main__':
     unittest.main()
