@@ -12,6 +12,10 @@ class LexerSpecs(unittest.TestCase):
         first_token = Lexer().tokenize('2814')[0]
         self.assertTrue(first_token.is_a(TokenType.integer))
 
+    def test_when_begins_numeric_and_becomes_chars_its_an_identifier(self):
+        first_token = Lexer().tokenize('42answer')[0]
+        self.assertTrue(first_token.is_a(TokenType.identifier))
+
     def test_when_lexing_integer_with_value_42_its_raw_value_is_42(self):
         first_token = Lexer().tokenize('42')[0]
         self.assertEqual('42', first_token.raw_value)

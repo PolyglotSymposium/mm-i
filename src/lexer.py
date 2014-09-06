@@ -41,7 +41,7 @@ class Lexer:
 def decorate_with_type(token, characters):
     if characters[0] in STRING_DELIMITERS:
         found_type = TokenType.string
-    elif characters[0].isdigit():
+    elif all_chars_are_numeric(characters):
         found_type = TokenType.integer
     else:
         found_type = TokenType.identifier
@@ -49,6 +49,9 @@ def decorate_with_type(token, characters):
     token.is_a = lambda ttype: ttype == found_type
 
     return token
+
+def all_chars_are_numeric(word):
+    return len([i for i in word if 48 <= ord(i) and 57 >= ord(i)]) == len(word)
 
 class TokenType:
     def integer(): pass
