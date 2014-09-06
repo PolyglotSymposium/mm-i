@@ -41,6 +41,8 @@ class Lexer:
 def decorate_with_type(token, characters):
     if characters[0] in STRING_DELIMITERS:
         found_type = TokenType.string
+    elif characters[0] == '(':
+        found_type = TokenType.left_paren
     elif all_chars_are_numeric(characters):
         found_type = TokenType.integer
     else:
@@ -57,3 +59,4 @@ class TokenType:
     def integer(): pass
     def string(): pass
     def identifier(): pass
+    def left_paren(): pass

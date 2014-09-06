@@ -80,5 +80,9 @@ class LexerSpecs(unittest.TestCase):
         first_token = Lexer().tokenize('+')[0]
         self.assertTrue(first_token.is_a(TokenType.identifier))
 
+    def test_left_paren_type(self):
+        first_token = Lexer().tokenize('(')[0]
+        self.assertTrue(first_token.is_a(TokenType.left_paren))
+
 if __name__ == '__main__':
     unittest.main()
