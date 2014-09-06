@@ -12,5 +12,9 @@ class LexerSpecs(unittest.TestCase):
         token = Lexer().tokenize("'single quoted!!!'")
         self.assertTrue(token.is_a(TokenType().string()))
 
+    def test_when_lexing_a_double_quoted_thing_its_type_is_string(self):
+        token = Lexer().tokenize('"double quoted = more work"')
+        self.assertTrue(token.is_a(TokenType().string()))
+
 if __name__ == '__main__':
     unittest.main()
