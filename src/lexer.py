@@ -7,23 +7,23 @@ class Lexer:
         for c in characters:
             current_word += c
             if current_word in CHAR_TO_TYPE:
-                yield Token(current_word, CHAR_TO_TYPE[current_word])
+                yield CHAR_TO_TYPE[current_word](current_word)
                 current_word = ''
             elif c in STRING_DELIMITERS:
                 self.__handle_string_delimiter(c)
             elif not self.__lexing_string() and c == ' ':
                 if current_word != ' ':
-                    yield Token(current_word[:-1], self.__get_type(current_word[:-1]))
+                    yield self.__get_token(current_word[:-1])
                 current_word = ''
         if current_word != '':
-            yield Token(current_word, self.__get_type(current_word))
+            yield self.__get_token(current_word)
 
-    def __get_type(self, word):
+    def __get_token(self, word):
         if word[0] in STRING_DELIMITERS:
-            return TokenType.string
+            return string_token(word)
         if word.isdigit():
-            return TokenType.integer
-        return TokenType.identifier
+            return integer_token(word)
+        return identifier_token(word)
 
     def __handle_string_delimiter(self, delim):
         if self.__lexing_string() and self.__ends_string(delim):
@@ -42,24 +42,30 @@ class Token:
         self.raw_value = word
         self.__ttype = ttype
 
-    def is_a(self, ttype):
-        return self.__ttype == ttype
+    def is_a(self, token):
+        return self.__ttype == token.__ttype
 
-class TokenType:
-    def integer(): pass
-    def string(): pass
-    def identifier(): pass
-    def left_paren(): pass
-    def right_paren(): pass
-    def right_square_bracket(): pass
-    def left_square_bracket(): pass
+def integer_token(word=None):
+    return Token(word, 0)
+def string_token(word=None): 
+    return Token(word, 1)
+def identifier_token(word=None):
+    return Token(word, 2)
+def left_paren_token(word=None):
+    return Token(word, 3)
+def right_paren_token(word=None):
+    return Token(word, 4)
+def right_square_bracket_token(word=None):
+    return Token(word, 5)
+def left_square_bracket_token(word=None):
+    return Token(word, 6)
 
 STRING_DELIMITERS = ['"', "'"]
 
 CHAR_TO_TYPE = {
-    '(': TokenType.left_paren,
-    ')': TokenType.right_paren,
-    ']': TokenType.right_square_bracket,
-    '[': TokenType.left_square_bracket,
+    '(': left_paren_token,
+    ')': right_paren_token,
+    ']': right_square_bracket_token,
+    '[': left_square_bracket_token,
 }
 
