@@ -58,11 +58,9 @@ class TokenFactory:
             return TokenType.string
         if word[0] in CHAR_TO_TYPE:
             return CHAR_TO_TYPE[word[0]]
-        if self.__all_chars_are_numeric(word):
+        if word.isdigit():
             return TokenType.integer
         return TokenType.identifier
-    def __all_chars_are_numeric(self, word):
-        return len([i for i in word if 48 <= ord(i) and 57 >= ord(i)]) == len(word)
 
 STRING_DELIMITERS = ['"', "'"]
 
