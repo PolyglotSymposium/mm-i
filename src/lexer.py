@@ -3,7 +3,7 @@ class Lexer:
         token = lambda: None
         token = decorate_with_type(token, characters)
         token.raw_value = characters
-        return [token, 42]
+        return [token, token]
 
 def decorate_with_type(token, characters):
     if characters[0] in ["'", '"']:
