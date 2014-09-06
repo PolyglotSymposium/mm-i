@@ -3,13 +3,7 @@ class Lexer:
         self.__current_delim = None
 
     def tokenize(self, characters):
-        tokens = []
-        for word in self.__split_words(characters):
-            token = lambda: None
-            token.raw_value = word
-            token.is_a = lambda ttype: ttype == TokenTypeFactory(token).create()
-            tokens.append(token)
-        return tokens
+        return [Token(word) for word in self.__split_words(characters)]
 
     def __split_words(self, characters):
         current_word = ''
@@ -38,6 +32,16 @@ class Lexer:
 
     def __lexing_string(self):
         return self.__current_delim
+
+class Token:
+    def __init__(self, word):
+        self.raw_value = word
+
+    def is_a(self, ttype):
+        return ttype == TokenTypeFactory(self).create()
+
+class TokenFactory:
+    pass
 
 class TokenType:
     def integer(): pass
