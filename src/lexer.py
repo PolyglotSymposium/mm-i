@@ -3,9 +3,9 @@ class Lexer:
         self.__current_delim = None # This is bad. The lexer itself should not be stateful.
 
     def tokenize(self, characters):
-        return [(word if hasattr(word, 'is_a') else TokenFactory().create(word)) for word in self.__split_words(characters)]
+        return [token for token in self.__split_into_tokens(characters)]
 
-    def __split_words(self, characters):
+    def __split_into_tokens(self, characters):
         current_word = ''
         for c in characters:
             current_word += c
