@@ -92,5 +92,13 @@ class LexerSpecs(unittest.TestCase):
         tokens = Lexer().tokenize(')mash')
         self.assertEqual(2, len(tokens))
 
+    def test_left_square_bracket_type(self):
+        first_token = Lexer().tokenize('[')[0]
+        self.assertTrue(first_token.is_a(TokenType.left_square_bracket))
+
+    def test_right_square_bracket_type(self):
+        first_token = Lexer().tokenize(']')[0]
+        self.assertTrue(first_token.is_a(TokenType.right_square_bracket))
+
 if __name__ == '__main__':
     unittest.main()

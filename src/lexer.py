@@ -45,6 +45,8 @@ class TokenType:
     def identifier(): pass
     def left_paren(): pass
     def right_paren(): pass
+    def right_square_bracket(): pass
+    def left_square_bracket(): pass
 
 class TokenTypeFactory:
 
@@ -68,5 +70,7 @@ STRING_DELIMITERS = ['"', "'"]
 
 CHAR_TO_TYPE = {
     '(': TokenType.left_paren,
-    ')': TokenType.right_paren
+    ')': TokenType.right_paren,
+    ']': TokenType.right_square_bracket,
+    '[': TokenType.left_square_bracket,
 }
