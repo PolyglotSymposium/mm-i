@@ -24,6 +24,10 @@ class LexerSpecs(unittest.TestCase):
         first_token = Lexer().tokenize('42 35')[0]
         self.assertTrue(first_token.is_a(TokenType.integer))
 
+    def test_when_lexing_two_integers_first_has_correct_value(self):
+        first_token = Lexer().tokenize('42 35')[0]
+        self.assertEqual('42', first_token.raw_value)
+
     def test_when_lexing_two_integers_second_is_integer(self):
         second_token = Lexer().tokenize('42 35')[1]
         self.assertTrue(second_token.is_a(TokenType.integer))

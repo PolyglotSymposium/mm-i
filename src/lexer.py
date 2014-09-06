@@ -20,7 +20,7 @@ class Lexer:
             if c in STRING_DELIMITERS:
                 self.__handle_string_delimiter(c)
             elif not self.__lexing_string() and c == ' ':
-                yield current_word
+                yield current_word[:-1]
                 current_word = ''
         yield current_word
 
