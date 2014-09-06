@@ -1,6 +1,9 @@
 STRING_DELIMITERS = ['"', "'"]
 
 class Lexer:
+    def __init__(self):
+        self.__current_delim = None
+
     def tokenize(self, characters):
         tokens = []
         for word in self.__split_words(characters):
@@ -11,19 +14,21 @@ class Lexer:
         return tokens
 
     def __split_words(self, characters):
-        self.__current_delim = None
-        current = ''
+        current_word = ''
         for c in characters:
-            current += c
+            current_word += c
             if c in STRING_DELIMITERS:
-                if self.__in_string() and self.__ends_string(c):
-                    self.__current_delim = None
-                elif not self.__in_string():
-                    self.__current_delim = c
+                self.__handle_string_delimiter(c)
             elif not self.__in_string() and c == ' ':
-                yield current
-                current = ''
-        yield current
+                yield current_word
+                current_word = ''
+        yield current_word
+
+    def __handle_string_delimiter(self, delim):
+        if self.__in_string() and self.__ends_string(delim):
+            self.__current_delim = None
+        elif not self.__in_string():
+            self.__current_delim = delim
 
     def __ends_string(self, char):
         return self.__current_delim == char
