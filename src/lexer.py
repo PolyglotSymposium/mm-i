@@ -1,9 +1,15 @@
 class Lexer:
     def tokenize(self, characters):
         token = lambda: None
-        token.is_a = lambda ttype: True
+        if characters[0] == "'":
+          token.is_a = lambda ttype: ttype == TokenType().string()
+        else:
+          token.is_a = lambda ttype: ttype == TokenType().integer()
         return token
 
 class TokenType:
     def integer(self):
-        pass
+        return 0
+
+    def string(self):
+        return 1
