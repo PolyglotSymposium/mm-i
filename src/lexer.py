@@ -1,16 +1,16 @@
 class Lexer:
     def __init__(self):
-        self.__current_delim = None
+        self.__current_delim = None # This is bad. The lexer itself should not be stateful.
 
     def tokenize(self, characters):
-        return [TokenFactory().create(word) for word in self.__split_words(characters)]
+        return [(word if hasattr(word, 'is_a') else TokenFactory().create(word)) for word in self.__split_words(characters)]
 
     def __split_words(self, characters):
         current_word = ''
         for c in characters:
             current_word += c
             if current_word in CHAR_TO_TYPE:
-                yield current_word
+                yield Token(current_word, CHAR_TO_TYPE[current_word])
                 current_word = ''
             elif c in STRING_DELIMITERS:
                 self.__handle_string_delimiter(c)
