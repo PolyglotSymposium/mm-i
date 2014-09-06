@@ -45,20 +45,21 @@ class Token:
     def is_a(self, token):
         return self.__ttype == token.__ttype
 
-def integer_token(word=None):
-    return Token(word, 0)
-def string_token(word=None): 
-    return Token(word, 1)
-def identifier_token(word=None):
-    return Token(word, 2)
-def left_paren_token(word=None):
-    return Token(word, 3)
-def right_paren_token(word=None):
-    return Token(word, 4)
-def right_square_bracket_token(word=None):
-    return Token(word, 5)
-def left_square_bracket_token(word=None):
-    return Token(word, 6)
+def __make_token_types():
+    token_type = -1
+    while True:
+        token_type += 1
+        yield lambda word=None: Token(word, token_type)
+
+token_types = __make_token_types()
+
+integer_token = next(token_types)
+string_token = next(token_types)
+identifier_token = next(token_types)
+left_paren_token = next(token_types)
+right_paren_token = next(token_types)
+right_square_bracket_token = next(token_types)
+left_square_bracket_token = next(token_types)
 
 STRING_DELIMITERS = ['"', "'"]
 
