@@ -19,10 +19,9 @@ class Lexer:
             elif current_delim:
                 continue
             elif c == ' ':
-                words.append(current)
+                yield current
                 current = ''
-        words.append(current)
-        return words
+        yield current
 
 
 def decorate_with_type(token, characters):
