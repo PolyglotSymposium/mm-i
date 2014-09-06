@@ -1,3 +1,5 @@
+STRING_DELIMITERS = ['"', "'"]
+
 class Lexer:
     def tokenize(self, characters):
         tokens = []
@@ -13,18 +15,16 @@ class Lexer:
         current = ''
         for c in characters:
             current += c
-            if c in ['"', "'"]:
+            if c in STRING_DELIMITERS:
                 current_delim = None if current_delim else c
-            elif current_delim:
-                continue
-            elif c == ' ':
+            elif not current_delim and c == ' ':
                 yield current
                 current = ''
         yield current
 
 
 def decorate_with_type(token, characters):
-    if characters[0] in ["'", '"']:
+    if characters[0] in STRING_DELIMITERS:
         found_type = TokenType.string
     else:
         found_type = TokenType.integer
