@@ -10,7 +10,6 @@ class Lexer:
 
     def __split_words(self, characters):
         current_delim = None
-        words = []
         current = ''
         for c in characters:
             current += c
