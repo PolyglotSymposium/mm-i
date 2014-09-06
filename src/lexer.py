@@ -43,6 +43,8 @@ def decorate_with_type(token):
         found_type = TokenType.string
     elif token.raw_value[0] == '(':
         found_type = TokenType.left_paren
+    elif token.raw_value[0] == ')':
+        found_type = TokenType.right_paren
     elif all_chars_are_numeric(token.raw_value):
         found_type = TokenType.integer
     else:
@@ -60,3 +62,4 @@ class TokenType:
     def string(): pass
     def identifier(): pass
     def left_paren(): pass
+    def right_paren(): pass
