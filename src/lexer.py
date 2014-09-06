@@ -17,7 +17,10 @@ class Lexer:
         current_word = ''
         for c in characters:
             current_word += c
-            if c in STRING_DELIMITERS:
+            if current_word in TokenTypeFactory.CHAR_TO_TYPE:
+                yield current_word
+                current_word = ''
+            elif c in STRING_DELIMITERS:
                 self.__handle_string_delimiter(c)
             elif not self.__lexing_string() and c == ' ':
                 if current_word != ' ':
@@ -47,8 +50,6 @@ class TokenType:
 
 class TokenTypeFactory:
     CHAR_TO_TYPE = {
-        '"': TokenType.string,
-        "'": TokenType.string,
         '(': TokenType.left_paren,
         ')': TokenType.right_paren
     }
@@ -57,7 +58,9 @@ class TokenTypeFactory:
         self.__text = token.raw_value
 
     def create(self):
-        if self.__text[0] in TokenTypeFactory.CHAR_TO_TYPE:
+        if self.__text[0] in ['"', "'"]:
+            return TokenType.string
+        elif self.__text[0] in TokenTypeFactory.CHAR_TO_TYPE:
             return TokenTypeFactory.CHAR_TO_TYPE[self.__text[0]]
         elif self.__all_chars_are_numeric():
             return TokenType.integer

@@ -88,5 +88,9 @@ class LexerSpecs(unittest.TestCase):
         first_token = Lexer().tokenize(')')[0]
         self.assertTrue(first_token.is_a(TokenType.right_paren))
 
+    def test_paren_mashed_with_identifier_is_two_tokens(self):
+        tokens = Lexer().tokenize(')mash')
+        self.assertEqual(2, len(tokens))
+
 if __name__ == '__main__':
     unittest.main()
