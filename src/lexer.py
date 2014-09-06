@@ -9,14 +9,14 @@ class Lexer:
         return tokens
 
     def __split_words(self, characters):
-        in_string = False
+        current_delim = None
         words = []
         current = ''
         for c in characters:
             current += c
-            if c == '"':
-                in_string = not in_string
-            elif in_string:
+            if c in ['"', "'"]:
+                current_delim = None if current_delim else c
+            elif current_delim:
                 continue
             elif c == ' ':
                 words.append(current)
