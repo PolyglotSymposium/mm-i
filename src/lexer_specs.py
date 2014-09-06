@@ -48,6 +48,14 @@ class LexerSpecs(unittest.TestCase):
         tokens = Lexer().tokenize("'string with spaces'")
         self.assertEqual(1, len(tokens))
 
+    def test_when_lexing_single_quoted_string_with_double_quotes_in_it_one_token_is_returned(self):
+        tokens = Lexer().tokenize("'quo\"te'")
+        self.assertEqual(1, len(tokens))
+
+    def test_when_lexing_double_quoted_string_with_single_quotes_in_it_one_token_is_returned(self):
+        tokens = Lexer().tokenize('"quo\'te"')
+        self.assertEqual(1, len(tokens))
+
     def test_when_lexing_double_quoted_string_with_spaces_in_it_its_raw_value_is_correct(self):
         first_token = Lexer().tokenize('"string with spaces"')[0]
         self.assertEqual('"string with spaces"', first_token.raw_value)
