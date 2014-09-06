@@ -5,7 +5,7 @@ class Lexer:
           token.is_a = lambda ttype: ttype == TokenType.string
         else:
           token.is_a = lambda ttype: ttype == TokenType.integer
-        return token
+        return [token]
 
 class TokenType:
     def integer(): pass
