@@ -1,4 +1,4 @@
-import mmitoken as token
+import mmi_token as token
 
 class Lexer:
     def __init__(self):

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import unittest
-import mmitoken as token
+import mmi_token as token
 
 class TokenSpecs(unittest.TestCase):
     def test_token_types_are_unique(self):
