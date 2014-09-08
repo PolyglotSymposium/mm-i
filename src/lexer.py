@@ -1,4 +1,4 @@
-from itertools import count
+import mmitoken as token
 
 class Lexer:
     def __init__(self):
@@ -22,10 +22,10 @@ class Lexer:
 
     def __get_token(self, word):
         if word[0] in STRING_DELIMITERS:
-            return string_token(word)
+            return token.string(word)
         if word.isdigit():
-            return integer_token(word)
-        return identifier_token(word)
+            return token.integer(word)
+        return token.identifier(word)
 
     def __handle_string_delimiter(self, delim):
         if self.__lexing_string() and self.__ends_string(delim):
@@ -39,32 +39,12 @@ class Lexer:
     def __lexing_string(self):
         return self.__current_delim
 
-class Token:
-    def __init__(self, word, ttype):
-        self.raw_value = word
-        self.__ttype = ttype
-
-    def is_a(self, token):
-        return self.__ttype == token.__ttype
-
-token_types = (
-    (lambda ttype: lambda word=None: Token(word, ttype))(tt)
-    for tt in count())
-
-integer_token = next(token_types)
-string_token = next(token_types)
-identifier_token = next(token_types)
-left_paren_token = next(token_types)
-right_paren_token = next(token_types)
-right_square_bracket_token = next(token_types)
-left_square_bracket_token = next(token_types)
-
 STRING_DELIMITERS = ['"', "'"]
 
 CHAR_TO_TYPE = {
-    '(': left_paren_token,
-    ')': right_paren_token,
-    ']': right_square_bracket_token,
-    '[': left_square_bracket_token,
+    '(': token.left_paren,
+    ')': token.right_paren,
+    ']': token.right_square_bracket,
+    '[': token.left_square_bracket,
 }
 
