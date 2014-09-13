@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 py3=python3
 if [[ $(python --version) == Python\ 3* ]]; then
     py3=python
