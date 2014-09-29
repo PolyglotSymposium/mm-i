@@ -11,6 +11,10 @@ def two_identifiers():
     yield token.identifier()
     yield token.identifier()
 
+class ExpressionSpecs(unittest.TestCase):
+    def test_expression_types_are_unique(self):
+        self.assertFalse(constant_value().is_a(function_call()))
+
 class ParserSpecs(unittest.TestCase):
     def test_single_token_in_input_stream_results_in_single_expression_in_output_stream(self):
         expressions = Parser().parse(one_integer())

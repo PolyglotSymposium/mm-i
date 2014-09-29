@@ -1,15 +1,22 @@
 import mmi_token as token
 
 def constant_value():
-    pass
+    return Expression(0)
 
 def function_call():
-    pass
+    return Expression(1)
 
 class Expression:
-    def is_a(self, exprtype):
-        return True
+    def __init__(self, exprtype):
+        self.__exprtype = exprtype
+    def is_a(self, expr):
+        return self.__exprtype == expr.__exprtype
 
 class Parser:
     def parse(self, tokens):
-        yield Expression()
+        next(tokens)
+        try:
+            next(tokens)
+            yield function_call()
+        except StopIteration:
+            yield constant_value()
