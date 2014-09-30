@@ -1,4 +1,31 @@
-class WithinMatcher(object):
+class Matcher(object):
+    def _split_remaining_text_and_get_token(self, text):
+        self.remaining_text = text[self.amount_to_chomp:]
+        return self.token(self.result_value)
+
+class WhileMatcher(Matcher):
+    def __init__(self, token, condition):
+        self.token = token
+        self.meets_condition = condition
+        self.amount_to_chomp = 0
+        self.result_value = ''
+
+    def match(self, text):
+        if not self.meets_condition(text[0]): return None
+
+        for c in text:
+            if not self.meets_condition(c):
+                break
+            self.amount_to_chomp += 1
+            self.result_value += c
+
+        return self._split_remaining_text_and_get_token(text)
+
+class UntilMatcher(WhileMatcher):
+    def __init__(self, token, condition):
+        WhileMatcher.__init__(self, token, lambda c: not condition(c))
+
+class WithinMatcher(Matcher):
     def __init__(self, token, delims, **keyargs):
         self.delims = delims
         self.token = token
@@ -9,19 +36,15 @@ class WithinMatcher(object):
 
     def match(self, text):
         if not self.__is_delim(text[0]): return None
-        self.delim = text[0]
+        self.ending_delim = text[0]
 
         for c in text[1:]:
             if self.__is_escape_character(c):
                 self.__chomp_escape(c)
             elif self.__is_ending_delim(c):
-                return self.__split_remaining_text_and_get_token(text)
+                return self._split_remaining_text_and_get_token(text)
             else:
                 self.__chomp_non_escape(c)
-
-    def __split_remaining_text_and_get_token(self, text):
-        self.remaining_text = text[self.amount_to_chomp:]
-        return self.token(self.result_value)
 
     def __chomp_escape(self, char):
         self.amount_to_chomp += 1
@@ -39,4 +62,4 @@ class WithinMatcher(object):
         return char == self.escape
 
     def __is_ending_delim(self, char):
-        return char == self.delim and not self.last_was_escape
+        return char == self.ending_delim and not self.last_was_escape
