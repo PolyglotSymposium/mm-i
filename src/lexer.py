@@ -1,4 +1,7 @@
 import mmi_token as token
+from matcher import WithinMatcher as within
+
+string_matcher = within(token.string, ['"', "'"], escape = '\\')
 
 class Lexer:
     def __init__(self):
