@@ -3,6 +3,16 @@ class Matcher(object):
         self.remaining_text = text[self.amount_to_chomp:]
         return self.token(self.result_value)
 
+class ExactLiteralMatcher(Matcher):
+    def __init__(self, token, to_match):
+        self.token = token
+        self.amount_to_chomp = len(to_match)
+        self.result_value = to_match
+
+    def match(self, text):
+        if text[:self.amount_to_chomp] == self.result_value:
+            return self._split_remaining_text_and_get_token(text)
+
 class WhileMatcher(Matcher):
     def __init__(self, token, condition):
         self.token = token

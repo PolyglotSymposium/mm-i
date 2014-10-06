@@ -1,53 +1,39 @@
 import mmi_token as token
 from matcher import WithinMatcher as within
+from matcher import ExactLiteralMatcher as literal
 
 string_matcher = within(token.string, ['"', "'"], escape = '\\')
+left_paren_matcher = literal(token.left_paren, '(')
+right_paren_matcher = literal(token.right_paren, ')')
+left_square_bracket_matcher = literal(token.left_square_bracket, '[')
+right_square_bracket_matcher = literal(token.right_square_bracket, ']')
+function_matcher = literal(token.function, '->')
+fourty_two_matcher = literal(token.integer, '42')
+
+MATCHERS = [
+    string_matcher,
+    left_paren_matcher,
+    right_paren_matcher,
+    left_square_bracket_matcher,
+    right_square_bracket_matcher,
+    function_matcher,
+    fourty_two_matcher
+]
 
 class Lexer:
-    def __init__(self):
-        self.__current_delim = None # This is bad. The lexer itself should not be stateful.
+    def __init__(self, matchers = MATCHERS):
+        self.matchers = matchers
 
     def tokenize(self, characters):
-        current_word = ''
-        for c in characters:
-            current_word += c
-            if current_word in CHAR_TO_TYPE:
-                yield CHAR_TO_TYPE[current_word](current_word)
-                current_word = ''
-            elif c in STRING_DELIMITERS:
-                self.__handle_string_delimiter(c)
-            elif not self.__lexing_string() and c == ' ':
-                if current_word != ' ':
-                    yield self.__get_token(current_word[:-1])
-                current_word = ''
-        if current_word != '':
-            yield self.__get_token(current_word)
+        while characters:
+            for matcher in self.matchers:
+                match = matcher.match(characters)
 
-    def __get_token(self, word):
-        if word[0] in STRING_DELIMITERS:
-            return token.string(word)
-        if word.isdigit():
-            return token.integer(word)
-        return token.identifier(word)
+                if match:
+                    yield match
+                    characters = matcher.remaining_text
+                    break
 
-    def __handle_string_delimiter(self, delim):
-        if self.__lexing_string() and self.__ends_string(delim):
-            self.__current_delim = None
-        elif not self.__lexing_string():
-            self.__current_delim = delim
-
-    def __ends_string(self, char):
-        return self.__current_delim == char
-
-    def __lexing_string(self):
-        return self.__current_delim
-
-STRING_DELIMITERS = ['"', "'"]
-
-CHAR_TO_TYPE = {
-    '(': token.left_paren,
-    ')': token.right_paren,
-    ']': token.right_square_bracket,
-    '[': token.left_square_bracket,
-}
-
+            if not match:
+                # So new tests will fail
+                raise Exception("No match for '" + characters + "'")

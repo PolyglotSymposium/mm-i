@@ -19,4 +19,4 @@ left_paren = next(types)
 right_paren = next(types)
 right_square_bracket = next(types)
 left_square_bracket = next(types)
-
+function = next(types)

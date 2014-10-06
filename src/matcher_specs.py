@@ -8,6 +8,24 @@ class MockToken(object):
     def __init__(self, value):
         self.raw_value = value
 
+class TestExactLiteralMatcher(unittest.TestCase):
+    def example_exact_literal_matcher(self):
+        return ExactLiteralMatcher(MockToken, '->')  
+
+    def test_matches(self):
+        self.assertTrue(self.example_exact_literal_matcher().match('->'))
+
+    def test_no_match_if_first_is_different(self):
+        self.assertFalse(self.example_exact_literal_matcher().match('_>'))
+
+    def test_match_even_if_later_text_is_there(self):
+        self.assertTrue(self.example_exact_literal_matcher().match('->later text'))
+
+    def test_match_calculates_correct_remaining_text(self):
+        matcher = self.example_exact_literal_matcher()
+        matcher.match('->later text')
+        self.assertEqual('later text', matcher.remaining_text)
+
 class TestUntilMatcher(unittest.TestCase):
     def example_until_matcher(self):
         return UntilMatcher(MockToken, lambda c: c in ' \t\n')
@@ -62,7 +80,7 @@ class TestWhileMatcher(unittest.TestCase):
 
 class TestWithinMatcher(unittest.TestCase):
     def example_string_matcher(self):
-        return WithinMatcher(mmi_token.string, ['"', "'"], escape = '\\')
+        return WithinMatcher(mmi_token.string, '"\'', escape = '\\')
 
     def test_does_not_match_the_given_value(self):
         self.assertEqual(
