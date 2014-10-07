@@ -19,7 +19,7 @@ right_square_bracket_matcher = Matches(literal, ']').to(token.right_square_brack
 function_matcher = Matches(literal, '->').to(token.function)
 bind_matcher = Matches(literal, '=').to(token.bind)
 comma_matcher = Matches(literal, ',').to(token.comma)
-fourty_two_matcher = Matches(literal, '42').to(token.integer)
+forty_two_matcher = Matches(literal, '42').to(token.integer)
 
 MATCHERS = [
     string_matcher,
@@ -30,7 +30,7 @@ MATCHERS = [
     function_matcher,
     bind_matcher,
     comma_matcher,
-    fourty_two_matcher
+    forty_two_matcher
 ]
 
 class Lexer:
