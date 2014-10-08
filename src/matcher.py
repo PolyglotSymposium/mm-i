@@ -36,13 +36,19 @@ class Until(While):
         While.__init__(self, token, lambda c: not condition(c))
 
 class Within(BaseMatcher):
-    def __init__(self, token, delims, **keyargs):
-        self.delims = delims
-        self.token = token
-        self.escape = keyargs.get('escape') # TODO kill this. I hate kwargs.
+    def __init__(self, delim):
+        self.delim = delim
         self.last_was_escape = False
         self.result_value = ''
         self.amount_to_chomp = 2
+
+    def escaped_by(self, escape_character):
+        self.escape = escape_character
+        return self
+
+    def matches_to(self, value):
+        self.token = value
+        return self
 
     def match(self, text):
         if not self.__is_delim(text[0]): return None
@@ -66,7 +72,7 @@ class Within(BaseMatcher):
         self.last_was_escape = False
 
     def __is_delim(self, char):
-        return char in self.delims
+        return char == self.delim
 
     def __is_escape_character(self, char):
         return char == self.escape

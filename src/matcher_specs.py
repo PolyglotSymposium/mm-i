@@ -78,9 +78,9 @@ class WhileMatcherSpecs(unittest.TestCase):
             " and stuff",
             matcher.remaining_text)
 
-class WithinMatcherSpecs(unittest.TestCase):
+class WithinSpecs(unittest.TestCase):
     def example_string_matcher(self):
-        return matcher.Within(mmi_token.string, '"\'', escape = '\\')
+        return matcher.Within("'").escaped_by('\\').matches_to(mmi_token.string)
 
     def test_does_not_match_the_given_value(self):
         self.assertEqual(
