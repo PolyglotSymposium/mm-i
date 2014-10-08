@@ -36,6 +36,11 @@ class LexerSpecs(unittest.TestCase):
     def test_begin_block_type(self):
         self.assert_first_token(':', token.begin_block())
 
+    def test_begin_block_type(self):
+        # In case we want to use comments as documentation or something, we
+        # might as well tokenize them
+        self.assert_first_token('/* block comment */', token.block_comment())
+
     def test_string_type(self):
         self.assert_first_token("'this is a string'", token.string())
 

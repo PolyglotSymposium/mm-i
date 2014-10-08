@@ -14,6 +14,7 @@ class Matches(object):
 
 MATCHERS = [
     Matches(within, ["'", '"'], escape = '\\').to(token.string),
+    Matches(within, ['/*', '*/']).to(token.block_comment),
     Matches(literal, '(').to(token.left_paren),
     Matches(literal, ')').to(token.right_paren),
     Matches(literal, '[').to(token.left_square_bracket),

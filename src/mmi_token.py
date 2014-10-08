@@ -12,15 +12,19 @@ types = (
     (lambda ttype: lambda word=None: Token(word, ttype))(tt)
     for tt in __count())
 
+# Content-bearing tokens
 integer = next(types)
 string = next(types)
 identifier = next(types)
+block_comment = next(types)
 
+# Tokens which come in pairs
 left_paren = next(types)
 right_paren = next(types)
 right_square_bracket = next(types)
 left_square_bracket = next(types)
 
+# Symbols
 function = next(types)
 bind = next(types)
 comma = next(types)
