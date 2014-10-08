@@ -3,7 +3,7 @@ class BaseMatcher(object):
         self.remaining_text = text[self.amount_to_chomp:]
         return self.token(self.result_value)
 
-class Literal(BaseMatcher):
+class Symbol(BaseMatcher):
     def __init__(self, token, to_match):
         self.token = token
         self.amount_to_chomp = len(to_match)

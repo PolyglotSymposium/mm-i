@@ -1,7 +1,7 @@
 import mmi_token as token
-from matcher import Within, Literal
+from matcher import Within, Symbol
 
-class Matches(object):
+class Matches(object): # TODO I would like to get rid of this layer of indirection. It's not holding its weight.
     def __init__(self, match_type, *details, **params):
         self.match_type = match_type
         self.details = details
@@ -12,17 +12,29 @@ class Matches(object):
 
 
 MATCHERS = [
-    Matches(Within, ["'", '"'], escape = '\\').to(token.string),
-    Matches(Within, ['/*', '*/']).to(token.block_comment),
-    Matches(Literal, '(').to(token.left_paren),
-    Matches(Literal, ')').to(token.right_paren),
-    Matches(Literal, '[').to(token.left_square_bracket),
-    Matches(Literal, ']').to(token.right_square_bracket),
-    Matches(Literal, '->').to(token.function),
-    Matches(Literal, '=').to(token.bind),
-    Matches(Literal, ',').to(token.comma),
-    Matches(Literal, ':').to(token.begin_block),
-    Matches(Literal, '42').to(token.integer)
+    # TODO I think an even more fluent interface would be appropriate here...
+    # TODO because of the nature of the configuration we are doing...
+    # TODO e.g. something like:
+    # TODO
+    # TODO Within('"').escaped_by('\\').match(token.string)
+    # TODO Between('/*', '*/').match(token.block_comment)
+    # TODO
+    # TODO I don't know, it's late and I'm just thinking out loud. It doesn't
+    # TODO seem like an escape character should be required.
+    Matches(Within, ["'", '"'], escape = '\\').to(token.string), # TODO can we have an escaped_by method instead?
+    # TODO also I think the fact that Within takes a list of delims is actually adding unneeded complexity
+    # TODO I think the line above should be split into two lines, one for each type of quote
+    # TODO That might feel more verbose, but it would actually be _simpler_
+    Matches(Within, ['/*', '*/']).to(token.block_comment), # TODO can we allow different begin and endd matches?
+    Matches(Symbol, '(').to(token.left_paren),
+    Matches(Symbol, ')').to(token.right_paren),
+    Matches(Symbol, '[').to(token.left_square_bracket),
+    Matches(Symbol, ']').to(token.right_square_bracket),
+    Matches(Symbol, '->').to(token.function),
+    Matches(Symbol, '=').to(token.bind),
+    Matches(Symbol, ',').to(token.comma),
+    Matches(Symbol, ':').to(token.begin_block),
+    Matches(Symbol, '42').to(token.integer)
 ]
 
 class Lexer:
@@ -32,7 +44,7 @@ class Lexer:
     def tokenize(self, characters):
         while characters:
             for matcher in self.matchers:
-                match = matcher().match(characters)
+                match = matcher().match(characters) # TODO why recreate the matcher every time?
 
                 if match:
                     yield match

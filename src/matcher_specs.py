@@ -10,7 +10,7 @@ class MockToken(object):
 
 class LiteralMatcherSpecs(unittest.TestCase):
     def example_exact_literal_matcher(self):
-        return matcher.Literal(MockToken, '->')  
+        return matcher.Symbol(MockToken, '->')  
 
     def test_matches(self):
         self.assertTrue(self.example_exact_literal_matcher().match('->'))
