@@ -15,9 +15,7 @@ class ExactText(BaseMatcher):
 class Within(BaseMatcher):
     def __init__(self, delim):
         self.delim = delim
-        self.last_was_escape = False
-        self.result_value = ''
-        self.amount_to_chomp = 2
+        self.__reset()
         self.escape = None
 
     def escaped_by(self, escape_character):
@@ -28,7 +26,7 @@ class Within(BaseMatcher):
         if not text[0] == self.delim: return None
 
         for c in text[1:]:
-            if self.__is_escape_character(c):
+            if self.escape == c:
                 self.__chomp_escape(c)
             elif self.__is_ending_delim(c):
                 result = self.token(self.result_value)
@@ -39,6 +37,7 @@ class Within(BaseMatcher):
                 self.__chomp_non_escape(c)
 
     def __reset(self):
+        self.last_was_escape = False
         self.result_value = ''
         self.amount_to_chomp = 2
 
@@ -50,12 +49,6 @@ class Within(BaseMatcher):
         self.amount_to_chomp += 1
         self.result_value += char
         self.last_was_escape = False
-
-    def __is_delim(self, char):
-        return char == self.delim
-
-    def __is_escape_character(self, char):
-        return char == self.escape
 
     def __is_ending_delim(self, char):
         return char == self.delim and not self.last_was_escape
