@@ -1,9 +1,9 @@
-class Matcher(object):
+class BaseMatcher(object):
     def _split_remaining_text_and_get_token(self, text):
         self.remaining_text = text[self.amount_to_chomp:]
         return self.token(self.result_value)
 
-class ExactLiteralMatcher(Matcher):
+class ExactLiteral(BaseMatcher):
     def __init__(self, token, to_match):
         self.token = token
         self.amount_to_chomp = len(to_match)
@@ -13,7 +13,7 @@ class ExactLiteralMatcher(Matcher):
         if text[:self.amount_to_chomp] == self.result_value:
             return self._split_remaining_text_and_get_token(text)
 
-class WhileMatcher(Matcher):
+class While(BaseMatcher):
     def __init__(self, token, condition):
         self.token = token
         self.meets_condition = condition
@@ -31,11 +31,11 @@ class WhileMatcher(Matcher):
 
         return self._split_remaining_text_and_get_token(text)
 
-class UntilMatcher(WhileMatcher):
+class Until(While):
     def __init__(self, token, condition):
-        WhileMatcher.__init__(self, token, lambda c: not condition(c))
+        While.__init__(self, token, lambda c: not condition(c))
 
-class WithinMatcher(Matcher):
+class Within(BaseMatcher):
     def __init__(self, token, delims, **keyargs):
         self.delims = delims
         self.token = token

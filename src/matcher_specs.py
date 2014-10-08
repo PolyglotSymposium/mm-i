@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import unittest
-from matcher import *
+import matcher
 import mmi_token
 
 class MockToken(object):
@@ -10,7 +10,7 @@ class MockToken(object):
 
 class ExactLiteralMatcherSpecs(unittest.TestCase):
     def example_exact_literal_matcher(self):
-        return ExactLiteralMatcher(MockToken, '->')  
+        return matcher.ExactLiteral(MockToken, '->')  
 
     def test_matches(self):
         self.assertTrue(self.example_exact_literal_matcher().match('->'))
@@ -28,7 +28,7 @@ class ExactLiteralMatcherSpecs(unittest.TestCase):
 
 class UntilMatcherSpecs(unittest.TestCase):
     def example_until_matcher(self):
-        return UntilMatcher(MockToken, lambda c: c in ' \t\n')
+        return matcher.Until(MockToken, lambda c: c in ' \t\n')
 
     def test_matches_but_not_as_the_first_character(self):
         self.assertEqual(
@@ -54,7 +54,7 @@ class UntilMatcherSpecs(unittest.TestCase):
 
 class WhileMatcherSpecs(unittest.TestCase):
     def example_while_matcher(self):
-        return WhileMatcher(MockToken, lambda c: c not in ' \t\n')
+        return matcher.While(MockToken, lambda c: c not in ' \t\n')
 
     def test_matches_but_not_as_the_first_character(self):
         self.assertEqual(
@@ -80,7 +80,7 @@ class WhileMatcherSpecs(unittest.TestCase):
 
 class WithinMatcherSpecs(unittest.TestCase):
     def example_string_matcher(self):
-        return WithinMatcher(mmi_token.string, '"\'', escape = '\\')
+        return matcher.Within(mmi_token.string, '"\'', escape = '\\')
 
     def test_does_not_match_the_given_value(self):
         self.assertEqual(
