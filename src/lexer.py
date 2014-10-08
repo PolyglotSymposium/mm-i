@@ -11,26 +11,18 @@ class Matches(object):
     def to(self, value):
         return lambda: self.match_type(value, *self.details, **self.params)
 
-string_matcher = Matches(within, ["'", '"'], escape = '\\').to(token.string)
-left_paren_matcher = Matches(literal, '(').to(token.left_paren)
-right_paren_matcher = Matches(literal, ')').to(token.right_paren)
-left_square_bracket_matcher = Matches(literal, '[').to(token.left_square_bracket)
-right_square_bracket_matcher = Matches(literal, ']').to(token.right_square_bracket)
-function_matcher = Matches(literal, '->').to(token.function)
-bind_matcher = Matches(literal, '=').to(token.bind)
-comma_matcher = Matches(literal, ',').to(token.comma)
-forty_two_matcher = Matches(literal, '42').to(token.integer)
 
 MATCHERS = [
-    string_matcher,
-    left_paren_matcher,
-    right_paren_matcher,
-    left_square_bracket_matcher,
-    right_square_bracket_matcher,
-    function_matcher,
-    bind_matcher,
-    comma_matcher,
-    forty_two_matcher
+    Matches(within, ["'", '"'], escape = '\\').to(token.string),
+    Matches(literal, '(').to(token.left_paren),
+    Matches(literal, ')').to(token.right_paren),
+    Matches(literal, '[').to(token.left_square_bracket),
+    Matches(literal, ']').to(token.right_square_bracket),
+    Matches(literal, '->').to(token.function),
+    Matches(literal, '=').to(token.bind),
+    Matches(literal, ',').to(token.comma),
+    Matches(literal, ':').to(token.begin_block),
+    Matches(literal, '42').to(token.integer)
 ]
 
 class Lexer:

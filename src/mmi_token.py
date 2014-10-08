@@ -15,11 +15,13 @@ types = (
 integer = next(types)
 string = next(types)
 identifier = next(types)
-function = next(types)
-bind = next(types)
 
 left_paren = next(types)
 right_paren = next(types)
 right_square_bracket = next(types)
 left_square_bracket = next(types)
+
+function = next(types)
+bind = next(types)
 comma = next(types)
+begin_block = next(types)

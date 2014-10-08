@@ -33,11 +33,16 @@ class LexerSpecs(unittest.TestCase):
     def test_comma_type(self):
         self.assert_first_token(',', token.comma())
 
+    def test_begin_block_type(self):
+        self.assert_first_token(':', token.begin_block())
+
     def test_string_type(self):
         self.assert_first_token("'this is a string'", token.string())
 
     def test_string_value(self):
         self.assert_first_value("'this is a string'", 'this is a string')
+
+    ## Helpers
 
     def assert_first_value(self, chars, expected_value):
         self.assertEqual(expected_value, first_token(chars).raw_value)
