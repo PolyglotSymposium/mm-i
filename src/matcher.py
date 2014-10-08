@@ -3,37 +3,18 @@ class BaseMatcher(object):
         self.remaining_text = text[self.amount_to_chomp:]
         return self.token(self.result_value)
 
-class Symbol(BaseMatcher):
-    def __init__(self, token, to_match):
-        self.token = token
-        self.amount_to_chomp = len(to_match)
-        self.result_value = to_match
+class ExactText(BaseMatcher):
+    def __init__(self, text):
+        self.amount_to_chomp = len(text)
+        self.result_value = text
+
+    def matches_to(self, value):
+        self.token = value
+        return self
 
     def match(self, text):
         if text[:self.amount_to_chomp] == self.result_value:
             return self._split_remaining_text_and_get_token(text)
-
-class While(BaseMatcher):
-    def __init__(self, token, condition):
-        self.token = token
-        self.meets_condition = condition
-        self.amount_to_chomp = 0
-        self.result_value = ''
-
-    def match(self, text):
-        if not self.meets_condition(text[0]): return None
-
-        for c in text:
-            if not self.meets_condition(c):
-                break
-            self.amount_to_chomp += 1
-            self.result_value += c
-
-        return self._split_remaining_text_and_get_token(text)
-
-class Until(While):
-    def __init__(self, token, condition):
-        While.__init__(self, token, lambda c: not condition(c))
 
 class Within(BaseMatcher):
     def __init__(self, delim):

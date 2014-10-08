@@ -10,7 +10,6 @@ class Matches(object): # TODO I would like to get rid of this layer of indirecti
     def to(self, value):
         return lambda: self.match_type(value, *self.details, **self.params)
 
-
 MATCHERS = [
     # TODO I think an even more fluent interface would be appropriate here...
     # TODO because of the nature of the configuration we are doing...

@@ -8,9 +8,9 @@ class MockToken(object):
     def __init__(self, value):
         self.raw_value = value
 
-class LiteralMatcherSpecs(unittest.TestCase):
+class ExactTextSpecs(unittest.TestCase):
     def example_exact_literal_matcher(self):
-        return matcher.Symbol(MockToken, '->')  
+        return matcher.ExactText('->').matches_to(MockToken)
 
     def test_matches(self):
         self.assertTrue(self.example_exact_literal_matcher().match('->'))
@@ -25,58 +25,6 @@ class LiteralMatcherSpecs(unittest.TestCase):
         matcher = self.example_exact_literal_matcher()
         matcher.match('->later text')
         self.assertEqual('later text', matcher.remaining_text)
-
-class UntilMatcherSpecs(unittest.TestCase):
-    def example_until_matcher(self):
-        return matcher.Until(MockToken, lambda c: c in ' \t\n')
-
-    def test_matches_but_not_as_the_first_character(self):
-        self.assertEqual(
-            None,
-            self.example_until_matcher().match(' foobar'))
-
-    def test_matches(self):
-        self.assertEqual(
-            'foobar',
-            self.example_until_matcher().match('foobar and stuff').raw_value)
-
-    def test_matches_and_ends_string(self):
-        self.assertEqual(
-            'foobar',
-            self.example_until_matcher().match('foobar').raw_value)
-
-    def test_matches_has_correct_remaining_value(self):
-        matcher = self.example_until_matcher()
-        matcher.match("foobar and stuff")
-        self.assertEqual(
-            " and stuff",
-            matcher.remaining_text)
-
-class WhileMatcherSpecs(unittest.TestCase):
-    def example_while_matcher(self):
-        return matcher.While(MockToken, lambda c: c not in ' \t\n')
-
-    def test_matches_but_not_as_the_first_character(self):
-        self.assertEqual(
-            None,
-            self.example_while_matcher().match(' foobar'))
-
-    def test_matches(self):
-        self.assertEqual(
-            'foobar',
-            self.example_while_matcher().match('foobar and stuff').raw_value)
-
-    def test_matches_and_ends_string(self):
-        self.assertEqual(
-            'foobar',
-            self.example_while_matcher().match('foobar').raw_value)
-
-    def test_matches_has_correct_remaining_value(self):
-        matcher = self.example_while_matcher()
-        matcher.match("foobar and stuff")
-        self.assertEqual(
-            " and stuff",
-            matcher.remaining_text)
 
 class WithinSpecs(unittest.TestCase):
     def example_string_matcher(self):
