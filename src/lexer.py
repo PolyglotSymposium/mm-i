@@ -1,6 +1,5 @@
 import mmi_token as token
-from matcher import WithinMatcher as within
-from matcher import ExactLiteralMatcher as literal
+from matcher import Within, Literal
 
 class Matches(object):
     def __init__(self, match_type, *details, **params):
@@ -13,17 +12,17 @@ class Matches(object):
 
 
 MATCHERS = [
-    Matches(within, ["'", '"'], escape = '\\').to(token.string),
-    Matches(within, ['/*', '*/']).to(token.block_comment),
-    Matches(literal, '(').to(token.left_paren),
-    Matches(literal, ')').to(token.right_paren),
-    Matches(literal, '[').to(token.left_square_bracket),
-    Matches(literal, ']').to(token.right_square_bracket),
-    Matches(literal, '->').to(token.function),
-    Matches(literal, '=').to(token.bind),
-    Matches(literal, ',').to(token.comma),
-    Matches(literal, ':').to(token.begin_block),
-    Matches(literal, '42').to(token.integer)
+    Matches(Within, ["'", '"'], escape = '\\').to(token.string),
+    Matches(Within, ['/*', '*/']).to(token.block_comment),
+    Matches(Literal, '(').to(token.left_paren),
+    Matches(Literal, ')').to(token.right_paren),
+    Matches(Literal, '[').to(token.left_square_bracket),
+    Matches(Literal, ']').to(token.right_square_bracket),
+    Matches(Literal, '->').to(token.function),
+    Matches(Literal, '=').to(token.bind),
+    Matches(Literal, ',').to(token.comma),
+    Matches(Literal, ':').to(token.begin_block),
+    Matches(Literal, '42').to(token.integer)
 ]
 
 class Lexer:

@@ -8,9 +8,9 @@ class MockToken(object):
     def __init__(self, value):
         self.raw_value = value
 
-class ExactLiteralMatcherSpecs(unittest.TestCase):
+class LiteralMatcherSpecs(unittest.TestCase):
     def example_exact_literal_matcher(self):
-        return matcher.ExactLiteral(MockToken, '->')  
+        return matcher.Literal(MockToken, '->')  
 
     def test_matches(self):
         self.assertTrue(self.example_exact_literal_matcher().match('->'))

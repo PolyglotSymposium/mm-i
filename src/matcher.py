@@ -3,7 +3,7 @@ class BaseMatcher(object):
         self.remaining_text = text[self.amount_to_chomp:]
         return self.token(self.result_value)
 
-class ExactLiteral(BaseMatcher):
+class Literal(BaseMatcher):
     def __init__(self, token, to_match):
         self.token = token
         self.amount_to_chomp = len(to_match)
@@ -39,7 +39,7 @@ class Within(BaseMatcher):
     def __init__(self, token, delims, **keyargs):
         self.delims = delims
         self.token = token
-        self.escape = keyargs['escape']
+        self.escape = keyargs.get('escape') # TODO kill this. I hate kwargs.
         self.last_was_escape = False
         self.result_value = ''
         self.amount_to_chomp = 2
