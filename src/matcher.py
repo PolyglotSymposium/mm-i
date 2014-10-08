@@ -3,14 +3,14 @@ class BaseMatcher(object):
         self.remaining_text = text[self.amount_to_chomp:]
         return self.token(self.result_value)
 
+    def matches_to(self, value):
+        self.token = value
+        return self
+
 class ExactText(BaseMatcher):
     def __init__(self, text):
         self.amount_to_chomp = len(text)
         self.result_value = text
-
-    def matches_to(self, value):
-        self.token = value
-        return self
 
     def match(self, text):
         if text[:self.amount_to_chomp] == self.result_value:
@@ -22,13 +22,10 @@ class Within(BaseMatcher):
         self.last_was_escape = False
         self.result_value = ''
         self.amount_to_chomp = 2
+        self.escape = None
 
     def escaped_by(self, escape_character):
         self.escape = escape_character
-        return self
-
-    def matches_to(self, value):
-        self.token = value
         return self
 
     def match(self, text):
