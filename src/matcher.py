@@ -13,8 +13,11 @@ class ExactText(BaseMatcher):
             return self.token(self.text)
 
 class Within(BaseMatcher):
-    def __init__(self, delim):
+    def __init__(self, delim, ending_delim = None):
         self.delim = delim
+        # TODO: Carry this pattern further so that this class calculates based
+        # TODO: on params rather than assuming characters are len == 1
+        self.ending_delim = ending_delim or delim
         self.__reset()
         self.escape = None
 
@@ -51,4 +54,4 @@ class Within(BaseMatcher):
         self.last_was_escape = False
 
     def __is_ending_delim(self, char):
-        return char == self.delim and not self.last_was_escape
+        return char == self.ending_delim and not self.last_was_escape

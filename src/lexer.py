@@ -4,7 +4,7 @@ from matcher import Within, ExactText
 MATCHERS = [
     Within("'").escaped_by('\\').matches_to(token.string),
     Within('"').escaped_by('\\').matches_to(token.string),
-#    Matches(Within, ['/*', '*/']).to(token.block_comment),
+    Within('/*', '*/').matches_to(token.block_comment),
     ExactText('(').matches_to(token.left_paren),
     ExactText(')').matches_to(token.right_paren),
     ExactText('[').matches_to(token.left_square_bracket),
