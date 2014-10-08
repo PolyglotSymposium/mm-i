@@ -1,21 +1,16 @@
 class BaseMatcher(object):
-    def _split_remaining_text_and_get_token(self, text):
-        self.remaining_text = text[self.amount_to_chomp:]
-        return self.token(self.result_value)
-
     def matches_to(self, value):
         self.token = value
         return self
 
 class ExactText(BaseMatcher):
     def __init__(self, text):
-        self.amount_to_chomp = len(text)
-        self.result_value = text
+        self.text = text
 
     def match(self, text):
-        # TODO: Char-by-char is probably faster
-        if text[:self.amount_to_chomp] == self.result_value:
-            return self._split_remaining_text_and_get_token(text)
+        if text[:len(self.text)] == self.text:
+            self.remaining_text = text[len(self.text):]
+            return self.token(self.text)
 
 class Within(BaseMatcher):
     def __init__(self, delim):
@@ -36,9 +31,16 @@ class Within(BaseMatcher):
             if self.__is_escape_character(c):
                 self.__chomp_escape(c)
             elif self.__is_ending_delim(c):
-                return self._split_remaining_text_and_get_token(text)
+                result = self.token(self.result_value)
+                self.remaining_text = text[self.amount_to_chomp:]
+                self.__reset()
+                return result
             else:
                 self.__chomp_non_escape(c)
+
+    def __reset(self):
+        self.result_value = ''
+        self.amount_to_chomp = 2
 
     def __chomp_escape(self, char):
         self.amount_to_chomp += 1
