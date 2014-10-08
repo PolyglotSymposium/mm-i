@@ -4,12 +4,12 @@ from matcher import ExactLiteralMatcher as literal
 
 class Matches(object):
     def __init__(self, match_type, *details, **params):
-      self.match_type = match_type
-      self.details = details
-      self.params = params
+        self.match_type = match_type
+        self.details = details
+        self.params = params
 
     def to(self, value):
-      return lambda: self.match_type(value, *self.details, **self.params)
+        return lambda: self.match_type(value, *self.details, **self.params)
 
 string_matcher = Matches(within, ["'", '"'], escape = '\\').to(token.string)
 left_paren_matcher = Matches(literal, '(').to(token.left_paren)
@@ -48,5 +48,5 @@ class Lexer:
                     break
 
             if not match:
-                # So new tests will fail
+                # So we don't end up in an infinite loop
                 raise Exception("No match for '" + characters + "'")

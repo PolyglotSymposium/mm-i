@@ -8,11 +8,8 @@ def nth(generator, n):
         next(generator)
     return next(generator)
 
-def tokenize(text):
-    return Lexer().tokenize(text)
-
-def first_token(chars):
-    return next(tokenize(chars))
+tokenize = lambda text: Lexer().tokenize(text)
+first_token = lambda chars: next(tokenize(chars))
 
 class LexerSpecs(unittest.TestCase):
     def test_left_paren_type(self):
