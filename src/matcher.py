@@ -13,6 +13,7 @@ class ExactText(BaseMatcher):
         self.result_value = text
 
     def match(self, text):
+        # TODO: Char-by-char is probably faster
         if text[:self.amount_to_chomp] == self.result_value:
             return self._split_remaining_text_and_get_token(text)
 
@@ -29,8 +30,7 @@ class Within(BaseMatcher):
         return self
 
     def match(self, text):
-        if not self.__is_delim(text[0]): return None
-        self.ending_delim = text[0]
+        if not text[0] == self.delim: return None
 
         for c in text[1:]:
             if self.__is_escape_character(c):
@@ -56,4 +56,4 @@ class Within(BaseMatcher):
         return char == self.escape
 
     def __is_ending_delim(self, char):
-        return char == self.ending_delim and not self.last_was_escape
+        return char == self.delim and not self.last_was_escape
