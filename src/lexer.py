@@ -1,5 +1,5 @@
 import mmi_token as token
-from matcher import Within, ExactText
+from matcher import Within, ExactText, While
 
 MATCHERS = [
     Within("'").escaped_by('\\').matches_to(token.string),
@@ -13,7 +13,7 @@ MATCHERS = [
     ExactText('=').matches_to(token.bind),
     ExactText(',').matches_to(token.comma),
     ExactText(':').matches_to(token.begin_block),
-    ExactText('42').matches_to(token.integer)
+    While(str.isdigit).matches_to(token.integer)
 ]
 
 class Lexer:

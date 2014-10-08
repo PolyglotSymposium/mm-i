@@ -12,6 +12,24 @@ class ExactText(BaseMatcher):
             self.remaining_text = text[len(self.text):]
             return self.token(self.text)
 
+class While(BaseMatcher):
+    def __init__(self, condition):
+        self.meets_condition = condition
+
+    def match(self, text):
+        if not self.meets_condition(text[0]): return None
+
+        result_value = ''
+        amount_to_chomp = 0
+        for c in text:
+            if not self.meets_condition(c):
+                break
+            amount_to_chomp += 1
+            result_value += c
+
+        self.remaining_text = text[amount_to_chomp:]
+        return self.token(result_value)
+
 class Within(BaseMatcher):
     def __init__(self, delim, ending_delim = None):
         self.delim = delim

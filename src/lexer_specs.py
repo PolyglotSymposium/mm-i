@@ -49,6 +49,12 @@ class LexerSpecs(unittest.TestCase):
     def test_string_value(self):
         self.assert_first_value("'this is a string'", 'this is a string')
 
+    def test_parses_integers(self):
+        self.assert_first_token('42', token.integer())
+        self.assert_first_value('42', '42')
+        self.assert_first_token('1337', token.integer())
+        self.assert_first_value('1337', '1337')
+
     ## Helpers
 
     def assert_first_value(self, chars, expected_value):

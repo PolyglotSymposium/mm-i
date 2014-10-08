@@ -26,6 +26,32 @@ class ExactTextSpecs(unittest.TestCase):
         matcher.match('->later text')
         self.assertEqual('later text', matcher.remaining_text)
 
+class WhileSpecs(unittest.TestCase):
+    def example_while_matcher(self):
+        return matcher.While(lambda c: c not in ' \t\n').matches_to(MockToken)
+
+    def test_matches_but_not_as_the_first_character(self):
+        self.assertEqual(
+            None,
+            self.example_while_matcher().match(' foobar'))
+
+    def test_matches(self):
+        self.assertEqual(
+            'foobar',
+            self.example_while_matcher().match('foobar and stuff').raw_value)
+
+    def test_matches_and_ends_string(self):
+        self.assertEqual(
+            'foobar',
+            self.example_while_matcher().match('foobar').raw_value)
+
+    def test_matches_has_correct_remaining_value(self):
+        matcher = self.example_while_matcher()
+        matcher.match("foobar and stuff")
+        self.assertEqual(
+            " and stuff",
+            matcher.remaining_text)
+
 class WithinSpecs(unittest.TestCase):
     def example_string_matcher(self):
         return matcher.Within("'").escaped_by('\\').matches_to(mmi_token.string)
