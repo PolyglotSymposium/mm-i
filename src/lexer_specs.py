@@ -42,12 +42,7 @@ class LexerSpecs(unittest.TestCase):
     def test_begin_block_type(self):
         self.assert_first_token(':', token.begin_block())
 
-    @unittest.skip
     def test_begin_block_type(self):
-        # In case we want to use comments as documentation or something, we
-        # might as well tokenize them. Besides, I don't think we have an
-        # "ignore" feature to the tokenizer yet. At this stage I would rather
-        # have the parser ignore them.
         self.assert_first_token('/* block comment */', token.block_comment())
 
     def test_string_type(self):

@@ -88,5 +88,35 @@ class WithinSpecs(unittest.TestCase):
             " and stuff",
             matcher.remaining_text)
 
+    def example_comment_matcher(self):
+        return matcher.Within('/*', '*/').matches_to(mmi_token.block_comment)
+
+    def test_no_match_for_complex_delims_where_string_doesnt_start_with_exact_delim(self):
+        self.assertEqual(
+            None,
+            self.example_comment_matcher().match('/- comment */'))
+
+    def test_match_for_complex_delims(self):
+        self.assertTrue(self.example_comment_matcher().match('/**/'))
+
+    def test_match_for_complex_delims_value(self):
+        self.assertEqual(
+            ' comment ',
+            self.example_comment_matcher().match('/* comment */').raw_value)
+
+    def test_match_for_complex_delims_remaining_text(self):
+        matcher = self.example_comment_matcher()
+        matcher.match('/* comment */this text remains')
+        self.assertEqual('this text remains', matcher.remaining_text)
+
+    def test_matcher_gets_reset_after_complex_match(self):
+        matcher = self.example_comment_matcher()
+        self.assertEqual(
+            ' first comment ',
+            matcher.match('/* first comment */').raw_value)
+        self.assertEqual(
+            ' second comment ',
+            matcher.match('/* second comment */').raw_value)
+
 if __name__ == '__main__':
     unittest.main()

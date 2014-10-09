@@ -33,8 +33,6 @@ class While(BaseMatcher):
 class Within(BaseMatcher):
     def __init__(self, delim, ending_delim = None):
         self.delim = delim
-        # TODO: Carry this pattern further so that this class calculates based
-        # TODO: on params rather than assuming characters are len == 1
         self.ending_delim = ending_delim or delim
         self.__reset()
         self.escape = None
@@ -44,12 +42,12 @@ class Within(BaseMatcher):
         return self
 
     def match(self, text):
-        if not text[0] == self.delim: return None
+        if not text.startswith(self.delim): return None
 
-        for c in text[1:]:
+        for c in text[len(self.delim):]:
             if self.escape == c:
                 self.__chomp_escape(c)
-            elif self.__is_ending_delim(c):
+            elif self.__is_ending_delim(text):
                 result = self.token(self.result_value)
                 self.remaining_text = text[self.amount_to_chomp:]
                 self.__reset()
@@ -60,7 +58,7 @@ class Within(BaseMatcher):
     def __reset(self):
         self.last_was_escape = False
         self.result_value = ''
-        self.amount_to_chomp = 2
+        self.amount_to_chomp = len(self.delim + self.ending_delim)
 
     def __chomp_escape(self, char):
         self.amount_to_chomp += 1
@@ -71,5 +69,8 @@ class Within(BaseMatcher):
         self.result_value += char
         self.last_was_escape = False
 
-    def __is_ending_delim(self, char):
-        return char == self.ending_delim and not self.last_was_escape
+    def __is_ending_delim(self, text):
+        return self.__current_chomp(text).startswith(self.ending_delim) and not self.last_was_escape
+
+    def __current_chomp(self, text):
+        return text[self.amount_to_chomp-len(self.ending_delim):]
