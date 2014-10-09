@@ -27,6 +27,9 @@ class LexerSpecs(unittest.TestCase):
     def test_function_type(self):
         self.assert_first_token('->', token.function())
 
+    def test_parses_pipe(self):
+        self.assert_first_token('|', token.pipe())
+
     def test_bind_type(self):
         self.assert_first_token('=', token.bind())
 

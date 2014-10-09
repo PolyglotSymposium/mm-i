@@ -11,6 +11,7 @@ MATCHERS = [
     ExactText(']').matches_to(token.right_square_bracket),
     ExactText('->').matches_to(token.function),
     ExactText('=').matches_to(token.bind),
+    ExactText('|').matches_to(token.pipe),
     ExactText(',').matches_to(token.comma),
     ExactText(':').matches_to(token.begin_block),
     While(str.isdigit).matches_to(token.integer),
