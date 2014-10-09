@@ -67,11 +67,23 @@ class LexerSpecs(unittest.TestCase):
     def test_parses_minus_as_identifier(self):
         self.assert_first_token('-', token.identifier())
 
+    def test_parses_underscore_as_identifier(self):
+        self.assert_first_token('_', token.identifier())
+
     def test_parses_plus_as_identifier(self):
         self.assert_first_token('+', token.identifier())
 
     def test_parses_times_as_identifier(self):
         self.assert_first_token('*', token.identifier())
+
+    def test_parses_slash_as_identifier(self):
+        self.assert_first_token('/', token.identifier())
+
+    def test_parses_question_mark_as_identifier(self):
+        self.assert_first_token('?', token.identifier())
+
+    def test_parses_angle_brackets_as_identifier(self):
+        self.assert_first_token('<>', token.identifier())
 
     def test_parses_equals_sign_as_identifier(self):
         self.assert_first_token('=', token.identifier())
