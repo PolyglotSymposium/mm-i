@@ -42,6 +42,9 @@ class LexerSpecs(unittest.TestCase):
     def test_begin_block_type(self):
         self.assert_first_token(':', token.begin_block())
 
+    def test_type_denote_type(self):
+        self.assert_first_token('::', token.type_denote())
+
     def test_block_comment_type(self):
         self.assert_first_token('/* block comment */', token.block_comment())
 

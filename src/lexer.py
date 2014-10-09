@@ -19,6 +19,7 @@ MATCHERS = [
     ExactText(',').matches_to(token.comma),
     ExactText('.').matches_to(token.dot),
     ExactText(';').matches_to(token.semicolon),
+    ExactText('::').matches_to(token.type_denote),
     ExactText(':').matches_to(token.begin_block),
     While(str.isdigit).matches_to(token.integer),
     Compound(
