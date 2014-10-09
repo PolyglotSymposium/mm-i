@@ -13,7 +13,8 @@ MATCHERS = [
     ExactText('=').matches_to(token.bind),
     ExactText(',').matches_to(token.comma),
     ExactText(':').matches_to(token.begin_block),
-    While(str.isdigit).matches_to(token.integer)
+    While(str.isdigit).matches_to(token.integer),
+    While(str.isalnum).matches_to(token.identifier)
 ]
 
 class Lexer:

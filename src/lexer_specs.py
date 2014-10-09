@@ -36,6 +36,7 @@ class LexerSpecs(unittest.TestCase):
     def test_begin_block_type(self):
         self.assert_first_token(':', token.begin_block())
 
+    @unittest.skip
     def test_begin_block_type(self):
         # In case we want to use comments as documentation or something, we
         # might as well tokenize them. Besides, I don't think we have an
@@ -54,6 +55,14 @@ class LexerSpecs(unittest.TestCase):
         self.assert_first_value('42', '42')
         self.assert_first_token('1337', token.integer())
         self.assert_first_value('1337', '1337')
+
+    def test_parses_alphabetic_as_identifier(self):
+        self.assert_first_token('foo', token.identifier())
+        self.assert_first_value('foo', 'foo')
+
+    def test_parses_alphanumeric_as_identifier(self):
+        self.assert_first_token('forty2', token.identifier())
+        self.assert_first_value('forty2', 'forty2')
 
     ## Helpers
 
