@@ -5,6 +5,7 @@ MATCHERS = [
     Within("'").escaped_by('\\').matches_to(token.string),
     Within('"').escaped_by('\\').matches_to(token.string),
     Within('/*', '*/').matches_to(token.block_comment),
+    Within('//', '\n').matches_to(token.line_comment),
     ExactText('(').matches_to(token.left_paren),
     ExactText(')').matches_to(token.right_paren),
     ExactText('[').matches_to(token.left_square_bracket),

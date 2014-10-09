@@ -17,6 +17,7 @@ integer = next(types)
 string = next(types)
 identifier = next(types)
 block_comment = next(types)
+line_comment = next(types)
 
 # Tokens which come in pairs
 left_paren = next(types)

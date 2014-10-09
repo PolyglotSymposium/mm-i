@@ -42,8 +42,13 @@ class LexerSpecs(unittest.TestCase):
     def test_begin_block_type(self):
         self.assert_first_token(':', token.begin_block())
 
-    def test_begin_block_type(self):
+    def test_block_comment_type(self):
         self.assert_first_token('/* block comment */', token.block_comment())
+
+    # TODO: Consider edge-case, comment at end of file with no newline... Delim
+    # TODO: should almost be a regex...
+    def test_line_comment_type(self):
+        self.assert_first_token('// This is a line comment\n', token.line_comment())
 
     def test_string_type(self):
         self.assert_first_token("'this is a string'", token.string())
