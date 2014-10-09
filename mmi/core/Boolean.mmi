@@ -6,10 +6,15 @@ if = true #then @value1 #else @value2 -> @value1
 if = false #then @value1 #else @value2 -> @value2
 
 and = (true, true) -> true
-and = (Boolean b1, Boolean b2) -> false
+and = (b1 :: Boolean, b2 :: Boolean) -> false
 
 or = (false, false) -> false
-or = (Boolean b1, Boolean b2) -> true
+or = (b1 :: Boolean, b2 :: Boolean) -> true
 
 not = false -> true
 not = true -> false
+
+if! = true #then action! -> action!()
+if! = false #then action! -> void
+if! = true #then action1! #else action2! -> action1!()
+if! = true #then action1! #else action2! -> action2!()
