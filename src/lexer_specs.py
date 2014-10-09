@@ -33,6 +33,12 @@ class LexerSpecs(unittest.TestCase):
     def test_comma_type(self):
         self.assert_first_token(',', token.comma())
 
+    def test_parses_dot(self):
+        self.assert_first_token('.', token.dot())
+
+    def test_parses_semicolon(self):
+        self.assert_first_token(';', token.semicolon())
+
     def test_begin_block_type(self):
         self.assert_first_token(':', token.begin_block())
 

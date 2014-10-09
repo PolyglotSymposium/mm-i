@@ -13,6 +13,8 @@ MATCHERS = [
     ExactText('=').matches_to(token.identifier),
     ExactText('|').matches_to(token.pipe),
     ExactText(',').matches_to(token.comma),
+    ExactText('.').matches_to(token.dot),
+    ExactText(';').matches_to(token.semicolon),
     ExactText(':').matches_to(token.begin_block),
     While(str.isdigit).matches_to(token.integer),
     While(lambda char: char.isalnum() or char in '-+*<>_/?').matches_to(token.identifier)
