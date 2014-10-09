@@ -14,7 +14,7 @@ MATCHERS = [
     ExactText(',').matches_to(token.comma),
     ExactText(':').matches_to(token.begin_block),
     While(str.isdigit).matches_to(token.integer),
-    While(str.isalnum).matches_to(token.identifier)
+    While(lambda char: char.isalnum() or char in '-+*').matches_to(token.identifier)
 ]
 
 class Lexer:

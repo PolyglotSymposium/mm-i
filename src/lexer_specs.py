@@ -64,6 +64,15 @@ class LexerSpecs(unittest.TestCase):
         self.assert_first_token('forty2', token.identifier())
         self.assert_first_value('forty2', 'forty2')
 
+    def test_parses_minus_as_identifier(self):
+        self.assert_first_token('-', token.identifier())
+
+    def test_parses_plus_as_identifier(self):
+        self.assert_first_token('+', token.identifier())
+
+    def test_parses_times_as_identifier(self):
+        self.assert_first_token('*', token.identifier())
+
     ## Helpers
 
     def assert_first_value(self, chars, expected_value):
