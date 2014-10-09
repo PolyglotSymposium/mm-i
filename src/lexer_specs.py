@@ -50,8 +50,10 @@ class LexerSpecs(unittest.TestCase):
     def test_line_comment_type(self):
         self.assert_first_token('// This is a line comment\n', token.line_comment())
 
-    def test_parses_named_commas(self):
+    def test_parses_named_commas_type(self):
         self.assert_first_token('#to', token.named_comma())
+
+    def test_parses_named_commas_value(self):
         self.assert_first_value('#to', 'to')
 
     def test_string_type(self):

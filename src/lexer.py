@@ -1,5 +1,5 @@
 import mmi_token as token
-from matcher import Within, ExactText, While
+from matcher import Within, ExactText, While, Compound
 
 def is_valid_identifier_character(char):
     return char.isalnum() or char in '-+*<>_/?'
@@ -21,6 +21,10 @@ MATCHERS = [
     ExactText(';').matches_to(token.semicolon),
     ExactText(':').matches_to(token.begin_block),
     While(str.isdigit).matches_to(token.integer),
+    Compound(
+        ExactText('#').is_required_but_ignored(),
+        While(is_valid_identifier_character)
+    ).matches_to(token.named_comma),
     While(is_valid_identifier_character).matches_to(token.identifier)
 ]
 
