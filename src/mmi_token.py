@@ -16,6 +16,7 @@ types = (
 integer = next(types)
 string = next(types)
 identifier = next(types)
+named_comma = next(types)
 block_comment = next(types)
 
 # Tokens which come in pairs
