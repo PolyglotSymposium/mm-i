@@ -6,10 +6,10 @@ if = true #then @value1 #else @value2 -> @value1
 if = false #then @value1 #else @value2 -> @value2
 
 and = (true, true) -> true
-and = (Boolean, Boolean) -> false
+and = (Boolean b1, Boolean b2) -> false
 
 or = (false, false) -> false
-or = (Boolean, Boolean) -> true
+or = (Boolean b1, Boolean b2) -> true
 
 not = false -> true
 not = true -> false
