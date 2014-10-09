@@ -21,6 +21,8 @@ MATCHERS = [
     ExactText(';').matches_to(token.semicolon),
     ExactText('::').matches_to(token.type_denote),
     ExactText(':').matches_to(token.begin_block),
+    ExactText(' ').matches_to(token.indentation_unit),
+    ExactText('\t').matches_to(token.indentation_unit),
     While(str.isdigit).matches_to(token.integer),
     Compound(
         ExactText('#').is_required_but_ignored(),
