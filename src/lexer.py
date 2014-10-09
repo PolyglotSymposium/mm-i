@@ -1,5 +1,8 @@
 import mmi_token as token
-from matcher import Within, ExactText, While
+from matcher import Within, ExactText, While, Compound
+
+def is_valid_identifier_character(char):
+    return char.isalnum() or char in '-+*<>_/?'
 
 MATCHERS = [
     Within("'").escaped_by('\\').matches_to(token.string),
@@ -18,7 +21,11 @@ MATCHERS = [
     ExactText(';').matches_to(token.semicolon),
     ExactText(':').matches_to(token.begin_block),
     While(str.isdigit).matches_to(token.integer),
-    While(lambda char: char.isalnum() or char in '-+*<>_/?').matches_to(token.identifier)
+    Compound(
+        ExactText('#').is_required_but_ignored(),
+        While(is_valid_identifier_character)
+    ).matches_to(token.named_comma),
+    While(is_valid_identifier_character).matches_to(token.identifier)
 ]
 
 class Lexer:

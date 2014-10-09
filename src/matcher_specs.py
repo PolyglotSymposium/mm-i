@@ -4,9 +4,88 @@ import unittest
 import matcher
 import mmi_token
 
+import uuid
+
+def anything():
+    pass
+
 class MockToken(object):
     def __init__(self, value):
         self.raw_value = value
+
+class MockPassingMatcher(object):
+    def __init__(self, raw_value = 'some parsed value'):
+        self.raw_value = raw_value
+        self.remaining_text = str(uuid.uuid1())
+
+    def match(self, text):
+        self.was_matched_against = text
+        return MockToken(self.raw_value)
+
+class MockFailingMatcher(object):
+    def match(self, _):
+        return None
+
+class CompoundSpecs(unittest.TestCase):
+    def example_compound_matcher(self, *matchers):
+        return matcher.Compound(*matchers).matches_to(MockToken)
+
+    def test_when_two_matchers_succeed_the_compund_succeeds(self):
+        self.assertTrue(
+            self.example_compound_matcher(
+                MockPassingMatcher(),
+                MockPassingMatcher()).match(anything()))
+
+    def test_when_first_fails_the_compound_fails(self):
+        self.assertEqual(
+            None,
+            self.example_compound_matcher(
+                MockFailingMatcher(),
+                MockPassingMatcher()).match(anything()))
+
+    def test_when_second_fails_the_compound_fails(self):
+        self.assertEqual(
+            None,
+            self.example_compound_matcher(
+                MockPassingMatcher(),
+                MockFailingMatcher()).match(anything()))
+
+    def test_when_both_succeed_their_sum_text_is_returned(self):
+        matcher_1 = MockPassingMatcher('foo')
+        matcher_2 = MockPassingMatcher('bar')
+
+        result = self.example_compound_matcher(matcher_1, matcher_2).match('...')
+
+        self.assertEqual('foobar', result.raw_value)
+
+    def test_when_first_succeeds_second_is_asked_to_match_its_remaining_text(self):
+        matcher_1 = MockPassingMatcher()
+        matcher_2 = MockPassingMatcher()
+
+        self.example_compound_matcher(matcher_1, matcher_2).match('...')
+
+        self.assertEqual(
+            matcher_1.remaining_text,
+            matcher_2.was_matched_against)
+
+    def test_when_both_succeed_seconds_remaining_text_is_preserved(self):
+        matcher_1 = MockPassingMatcher()
+        matcher_2 = MockPassingMatcher()
+        compound_matcher = self.example_compound_matcher(matcher_1, matcher_2)
+
+        compound_matcher.match('...')
+
+        self.assertEqual(
+            matcher_2.remaining_text,
+            compound_matcher.remaining_text)
+
+    def test_a_whole_bunch_of_successes_are_a_compound_success(self):
+        self.assertTrue(
+            self.example_compound_matcher(
+                MockPassingMatcher(),
+                MockPassingMatcher(),
+                MockPassingMatcher(),
+                MockPassingMatcher()))
 
 class ExactTextSpecs(unittest.TestCase):
     def example_exact_literal_matcher(self):
