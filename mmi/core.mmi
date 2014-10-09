@@ -1,0 +1,15 @@
+Boolean = datatype:
+    false = elemtype()
+    true = elemtype()
+
+if = true #then @value1 #else @value2 -> @value1
+if = false #then @value1 #else @value2 -> @value2
+
+and = (true, true) -> true
+and = (Boolean, Boolean) -> false
+
+or = (false, false) -> false
+or = (Boolean, Boolean) -> true
+
+not = false -> true
+not = true -> false
