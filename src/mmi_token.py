@@ -26,7 +26,6 @@ left_square_bracket = next(types)
 
 # Symbols
 function = next(types)
-bind = next(types)
 pipe = next(types)
 comma = next(types)
 begin_block = next(types)

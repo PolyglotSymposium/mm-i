@@ -30,9 +30,6 @@ class LexerSpecs(unittest.TestCase):
     def test_parses_pipe(self):
         self.assert_first_token('|', token.pipe())
 
-    def test_bind_type(self):
-        self.assert_first_token('=', token.bind())
-
     def test_comma_type(self):
         self.assert_first_token(',', token.comma())
 
@@ -75,6 +72,9 @@ class LexerSpecs(unittest.TestCase):
 
     def test_parses_times_as_identifier(self):
         self.assert_first_token('*', token.identifier())
+
+    def test_parses_equals_sign_as_identifier(self):
+        self.assert_first_token('=', token.identifier())
 
     ## Helpers
 
