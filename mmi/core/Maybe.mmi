@@ -1,0 +1,4 @@
+Maybe = datatype:
+    some = elemtype @data
+    none = elemtype()
+
