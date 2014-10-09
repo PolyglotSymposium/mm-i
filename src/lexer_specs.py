@@ -46,10 +46,10 @@ class LexerSpecs(unittest.TestCase):
         self.assert_first_token('::', token.type_denote())
 
     def test_parses_space_type(self):
-        self.assert_first_token(' ', token.indentation_unit())
+        self.assert_first_token(' ', token.space())
 
     def test_parses_tab_type(self):
-        self.assert_first_token('\t', token.indentation_unit())
+        self.assert_first_token('\t', token.tab())
 
     def test_block_comment_type(self):
         self.assert_first_token('/* block comment */', token.block_comment())
