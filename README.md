@@ -14,3 +14,6 @@ statement I would want to defend rigorously, but it inspired the name of this
 language. This is not a language built to be a language. This is a language
 built to be a failure. We intend to learn by failing. Perhaps if we fail enough
 we will build a real language some day.
+
+The reason for slash in the spelling is because it has such a cool retro look,
+like PL/I or OS/2.
