@@ -1,0 +1,3 @@
+Sequence = type of @i:
+    first = type (void -> @i)
+    rest = type (void -> Sequence of @i)
