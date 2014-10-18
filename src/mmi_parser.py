@@ -4,7 +4,7 @@ class Parser:
     def parse(self, tokens):
         token1 = next(tokens)
         try:
-            next(tokens)
-            yield ast.FunctionCall()
+            token2 = next(tokens)
+            yield ast.FunctionCall(token1, [token2])
         except StopIteration:
             yield ast.ConstantValue(token1)

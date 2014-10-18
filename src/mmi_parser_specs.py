@@ -26,9 +26,10 @@ class ParserSpecs(unittest.TestCase):
         expr = next(Parser().parse(n_identifiers(2)))
         self.assertTrue(expr.is_a(FunctionCall))
 
-    def _test_two_identifier_tokens_parse_as_second_applied_to_first(self):
+    def test_two_identifier_tokens_parse_as_second_applied_to_first(self):
         expr = next(Parser().parse(n_identifiers(2)))
-        self.assertTrue(expr.is_a(FunctionCall))
+        self.assertEqual(token.identifier('id0'), expr.function)
+        self.assertEqual(token.identifier('id1'), expr.arguments[0])
 
     def test_two_identifier_tokens_parse_to_function_application(self):
         expr = next(Parser().parse(n_identifiers(3)))

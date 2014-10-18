@@ -7,4 +7,6 @@ class ConstantValue(Expression):
         self.token = value_token
 
 class FunctionCall(Expression):
-    pass
+    def __init__(self, function, arguments):
+        self.function = function
+        self.arguments = arguments
