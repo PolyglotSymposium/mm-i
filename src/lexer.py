@@ -14,7 +14,7 @@ MATCHERS = [
     ExactText('[').matches_to(token.left_square_bracket),
     ExactText(']').matches_to(token.right_square_bracket),
     ExactText('->').matches_to(token.function),
-    ExactText('=').matches_to(token.identifier),
+    ExactText('=').matches_to(token.bind),
     ExactText('|').matches_to(token.pipe),
     ExactText(',').matches_to(token.comma),
     ExactText('.').matches_to(token.dot),

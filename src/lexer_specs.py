@@ -106,8 +106,8 @@ class LexerSpecs(unittest.TestCase):
     def test_parses_angle_brackets_as_identifier(self):
         self.assert_first_token('<>', token.identifier())
 
-    def test_parses_equals_sign_as_identifier(self):
-        self.assert_first_token('=', token.identifier())
+    def test_parses_equals_sign_as_bind_token(self):
+        self.assert_first_token('=', token.bind())
 
     ## Helpers
 

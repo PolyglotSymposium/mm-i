@@ -29,6 +29,7 @@ left_square_bracket = next(types)
 # Symbols
 function = next(types)
 pipe = next(types)
+bind = next(types)
 dot = next(types)
 comma = next(types)
 semicolon = next(types)
