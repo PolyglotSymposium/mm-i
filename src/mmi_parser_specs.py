@@ -31,9 +31,15 @@ class ParserSpecs(unittest.TestCase):
         self.assertEqual(token.identifier('id0'), expr.function)
         self.assertEqual(token.identifier('id1'), expr.arguments[0])
 
-    def test_two_identifier_tokens_parse_to_function_application(self):
+    def test_three_identifier_tokens_parse_to_function_application(self):
         expr = next(Parser().parse(n_identifiers(3)))
         self.assertTrue(expr.is_a(FunctionCall))
+
+    def test_three_identifier_tokens_parse_as_first_and_third_applied_to_second(self):
+        expr = next(Parser().parse(n_identifiers(3)))
+        self.assertEqual(token.identifier('id1'), expr.function)
+        self.assertEqual(token.identifier('id0'), expr.arguments[0])
+        self.assertEqual(token.identifier('id2'), expr.arguments[1])
 
 if __name__ == '__main__':
     unittest.main()
