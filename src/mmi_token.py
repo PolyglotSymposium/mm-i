@@ -5,6 +5,9 @@ class Token:
         self.raw_value = word
         self.__ttype = ttype
 
+    def __eq__(self, other):
+        return self.raw_value == other.raw_value and other.is_a(self)
+
     def is_a(self, token):
         return self.__ttype == token.__ttype
 

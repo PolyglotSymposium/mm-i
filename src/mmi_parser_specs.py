@@ -5,8 +5,8 @@ import mmi_token as token
 from mmi_parser import Parser
 from mmi_ast import ConstantValue, FunctionCall
 
-def one_integer():
-    yield token.integer()
+def one_integer(x=0):
+    yield token.integer(x)
 
 def n_identifiers(n):
     for i in range(n):
@@ -18,8 +18,9 @@ class ParserSpecs(unittest.TestCase):
         self.assertEqual(1, len(list(expressions)))
 
     def test_single_integer_token_parses_as_constant_value_expression(self):
-        expr = next(Parser().parse(one_integer()))
+        expr = next(Parser().parse(one_integer(7)))
         self.assertTrue(expr.is_a(ConstantValue))
+        self.assertEqual(token.integer(7), expr.token)
 
     def test_two_identifier_tokens_parse_as_function_application(self):
         expr = next(Parser().parse(n_identifiers(2)))

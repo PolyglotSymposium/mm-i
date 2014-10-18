@@ -3,8 +3,8 @@ class Expression:
         return self.__class__ == expr_class
     
 class ConstantValue(Expression):
-    def __init__(self, value):
-        pass
+    def __init__(self, value_token):
+        self.token = value_token
 
 class FunctionCall(Expression):
     pass
