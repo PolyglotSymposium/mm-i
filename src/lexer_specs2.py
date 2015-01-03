@@ -6,7 +6,7 @@ from lexer import *
 spec = SpecFor('The MM/I Lexer')
 
 spec.add('The lexer', Lexer,
-    ('should parse', lambda lexer: lexer.tokenize,
+    ('should parse', Lexer.tokenize,
         ('a ( character', lambda: '(',
             ('as a left-parenthesis token', lambda token:
                 token.should_be(token.left_paren())
